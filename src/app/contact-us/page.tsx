@@ -54,6 +54,11 @@ export default function ContactPage() {
         eyebrow="Contact Us"
         title="Get in touch with us"
         description="We would love to hear from you!"
+        image={{
+          src: "/images/contact-hero-westlands-nairobi.webp",
+          alt: "Office towers in Westlands, Nairobi, under a bright cloudy sky",
+          position: "center 40%",
+        }}
         breadcrumb={[{ label: "Contact Us" }]}
         overlapBelow
       />
