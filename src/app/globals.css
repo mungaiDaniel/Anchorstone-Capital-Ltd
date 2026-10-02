@@ -1,0 +1,164 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+/*
+ * Design tokens — the ONLY place colours and font stacks are defined.
+ * Components use the generated utilities (bg-brand-700, text-ink-600, font-mono …).
+ *
+ * Brand values extracted from the original site's Astra / Elementor CSS:
+ *   #00178A  Elementor primary (buttons, headings)      → brand-700
+ *   #060097  Astra global colour 0 (links, menu)         → brand-600
+ *   #F3F2FF  Elementor accent (lavender sections/cards)  → lavender-100
+ *   #F9F6FE  Astra global colour 4 (page background)     → lavender-50
+ *   #1E293B  Astra heading colour                        → ink-900
+ *   #67768E  Astra body text colour                      → ink-500
+ *   #F69821  Elementor secondary (button hover)          → accent-orange
+ *   #FFCD57  Astra global colour 7 (link hover)          → accent-gold
+ * The other steps of the scale are interpolated from those anchors.
+ */
+@theme {
+  /* Brand navy */
+  --color-brand-50: #f3f2ff;
+  --color-brand-100: #e4e5fb;
+  --color-brand-200: #c3c7f2;
+  --color-brand-300: #969fe4;
+  --color-brand-400: #5d69cc;
+  --color-brand-500: #2c3cb0;
+  --color-brand-600: #060097;
+  --color-brand-700: #00178a;
+  --color-brand-800: #001270;
+  --color-brand-900: #000d52;
+  --color-brand-950: #000833;
+
+  /* Light lavender section backgrounds */
+  --color-lavender-50: #f9f6fe;
+  --color-lavender-100: #f3f2ff;
+  --color-lavender-200: #e6e3fb;
+
+  /* Warm accents — used sparingly for highlights */
+  --color-accent-gold: #ffcd57;
+  --color-accent-orange: #f69821;
+
+  /* Neutral text + lines (ink-600 is darkened from #67768E for AA contrast on lavender) */
+  --color-ink-900: #1e293b;
+  --color-ink-700: #334155;
+  --color-ink-600: #4b5873;
+  --color-ink-500: #67768e;
+  --color-line: #e4e4f2;
+
+  /* Form error state (not a brand colour; AA contrast on white) */
+  --color-danger: #b42318;
+
+  --color-surface: #ffffff;
+
+  /* Fonts (CSS variables injected by next/font in app/layout.tsx) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Soft, premium shadows tinted with the brand navy */
+  --shadow-soft: 0 1px 2px rgb(0 13 82 / 0.04), 0 8px 24px -8px rgb(0 13 82 / 0.1);
+  --shadow-lift: 0 2px 4px rgb(0 13 82 / 0.05), 0 24px 48px -16px rgb(0 13 82 / 0.22);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Slow settle-zoom for hero photos (disabled by the reduced-motion rule below) */
+  --animate-ken-burns: ken-burns 9s linear both;
+  @keyframes ken-burns {
+    from { transform: scale(1.08); }
+    to { transform: scale(1); }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink-600);
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-mono);
+    color: var(--color-brand-900);
+    letter-spacing: -0.03em;
+    text-wrap-style: balance;
+  }
+
+  p {
+    text-wrap-style: pretty;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-700);
+    color: #fff;
+  }
+}
+
+@layer components {
+  /* Range slider: navy fill up to --fill (set inline), lavender track beyond */
+  .range {
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 9999px;
+    background: linear-gradient(
+      to right,
+      var(--color-brand-700) var(--fill, 0%),
+      var(--color-lavender-200) var(--fill, 0%)
+    );
+    cursor: pointer;
+  }
+  .range::-webkit-slider-thumb {
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 9999px;
+    background: var(--color-surface);
+    border: 3px solid var(--color-brand-700);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.2s var(--ease-out-expo);
+  }
+  .range::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: var(--color-surface);
+    border: 3px solid var(--color-brand-700);
+    box-shadow: var(--shadow-soft);
+  }
+  .range:hover::-webkit-slider-thumb,
+  .range:active::-webkit-slider-thumb {
+    transform: scale(1.15);
+  }
+
+  /* Small uppercase, letter-spaced mono label used above headings */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
