@@ -50,7 +50,7 @@ export default async function TeamMemberPage({ params }: PageProps<"/our-team/[s
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
 
-      <section className="relative isolate overflow-hidden bg-lavender-50 pt-10 pb-20 sm:pt-14 sm:pb-28">
+      <section className="relative isolate overflow-hidden bg-lavender-50 pt-32 pb-20 sm:pt-36 sm:pb-28">
         <div aria-hidden="true" className="absolute inset-x-0 top-0 -z-10 h-72 bg-linear-to-b from-brand-50 to-transparent" />
         <Container>
           <nav aria-label="Breadcrumb">

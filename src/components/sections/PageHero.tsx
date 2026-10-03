@@ -43,7 +43,7 @@ export function PageHero({ eyebrow, title, description, image, breadcrumb, overl
         </div>
       )}
 
-      <Container className={`pt-20 sm:pt-28 ${overlapBelow ? "pb-32 sm:pb-40" : "pb-20 sm:pb-28"}`}>
+      <Container className={`pt-36 sm:pt-44 ${overlapBelow ? "pb-32 sm:pb-40" : "pb-20 sm:pb-28"}`}>
         <nav aria-label="Breadcrumb">
           <ol className="flex items-center gap-2 font-mono text-xs text-brand-200">
             <li>

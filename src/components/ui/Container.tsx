@@ -1,19 +1,9 @@
-import type { ComponentPropsWithoutRef, ElementType } from "react";
+import type { ComponentPropsWithoutRef } from "react";
 
-type ContainerProps<T extends ElementType> = {
-  as?: T;
-} & ComponentPropsWithoutRef<T>;
+type ContainerTag = "div" | "section" | "nav" | "ul" | "header" | "footer";
 
-export function Container<T extends ElementType = "div">({
-  as,
-  className = "",
-  ...props
-}: ContainerProps<T>) {
-  const Tag = as ?? "div";
-  return (
-    <Tag
-      className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`}
-      {...props}
-    />
-  );
+type ContainerProps = { as?: ContainerTag } & ComponentPropsWithoutRef<"div">;
+
+export function Container({ as: Tag = "div", className = "", ...props }: ContainerProps) {
+  return <Tag className={`mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 ${className}`} {...(props as object)} />;
 }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { loanProducts } from "@/content/loans";
 import { contact, site } from "@/lib/site";
-import { HeroSlider } from "@/components/sections/home/HeroSlider";
+import { Hero } from "@/components/hero/Hero";
 import { ApplySteps } from "@/components/sections/home/ApplySteps";
 import { LoanCalculator } from "@/components/sections/home/LoanCalculator";
 import { LoanProductSection } from "@/components/sections/home/LoanProductSection";
@@ -42,7 +42,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <HeroSlider />
+      <Hero />
       <ApplySteps />
       <LoanCalculator />
       {loanProducts.map((product, i) => (

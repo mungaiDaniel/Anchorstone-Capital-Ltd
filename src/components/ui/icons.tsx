@@ -128,3 +128,10 @@ export const CopyIcon = (p: IconProps) => (
     <path d="M5 15V6a2 2 0 012-2h9" />
   </Icon>
 );
+
+export const SparkleIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M12 3l1.9 5.6L19.5 10.5 13.9 12.4 12 18l-1.9-5.6L4.5 10.5l5.6-1.9L12 3z" />
+    <path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15z" />
+  </Icon>
+);

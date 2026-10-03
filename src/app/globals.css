@@ -51,6 +51,9 @@
 
   --color-surface: #ffffff;
 
+  /* Near-black navy at the edges of the home hero */
+  --color-night: #01030f;
+
   /* Fonts (CSS variables injected by next/font in app/layout.tsx) */
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
@@ -142,6 +145,28 @@
     transform: scale(1.15);
   }
 
+  /* ── Home hero ─────────────────────────────────────────────────────────
+     CSS-only entrance so the copy shows from first paint (no JS needed).
+     Each element sets its start time with the --d custom property. */
+  .hero-in {
+    animation: hero-rise 0.9s var(--ease-out-expo) var(--d, 0s) both;
+  }
+  .hero-word {
+    animation: hero-word 1s var(--ease-out-expo) var(--d, 0s) both;
+  }
+  .hero-fade-in {
+    animation: hero-fade 0.8s ease-out both;
+  }
+  @keyframes hero-rise {
+    from { opacity: 0; transform: translateY(18px); }
+  }
+  @keyframes hero-word {
+    from { opacity: 0; transform: translateY(0.35em); filter: blur(12px); }
+  }
+  @keyframes hero-fade {
+    from { opacity: 0; }
+  }
+
   /* Small uppercase, letter-spaced mono label used above headings */
   .eyebrow {
     font-family: var(--font-mono);
@@ -153,6 +178,24 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Hero: no entrance delays */
+  .hero-in,
+  .hero-word,
+  .hero-fade-in {
+    animation: none;
+  }
+  /* <Marquee>: a static, wrapped list */
+  .marquee-track {
+    width: auto;
+    justify-content: center;
+  }
+  .marquee-copy {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .marquee-copy + .marquee-copy {
+    display: none;
+  }
   html {
     scroll-behavior: auto;
   }
@@ -160,5 +203,160 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ═════════════════════════════════════════════════════════════════════════
+   Motion system (tokens come from src/lib/motion.ts as --motion-* variables,
+   written on <html> by the root layout). See MOTION.md.
+   Rule: server HTML is always visible. JS only adds `.reveal-pending` to
+   elements that are still below the fold, then `.reveal-in` when they enter.
+   ═════════════════════════════════════════════════════════════════════════ */
+@layer components {
+  /* Starting offsets per variant (custom properties inherit to stagger items) */
+  :is([data-reveal], [data-stagger]) {
+    --reveal-from: translate3d(0, var(--motion-distance), 0);
+  }
+  :is([data-reveal="left"], [data-stagger="left"]) {
+    --reveal-from: translate3d(calc(var(--motion-distance-side) * -1), 0, 0);
+  }
+  :is([data-reveal="right"], [data-stagger="right"]) {
+    --reveal-from: translate3d(var(--motion-distance-side), 0, 0);
+  }
+  :is([data-reveal="scale"], [data-stagger="scale"]) {
+    --reveal-from: scale(var(--motion-scale));
+  }
+  :is([data-reveal="blur"], [data-stagger="blur"]) {
+    --reveal-from: translate3d(0, calc(var(--motion-distance) * 0.4), 0);
+  }
+  [data-reveal-mode="fade"] {
+    --reveal-from: none;
+  }
+
+  /* Scroll-triggered (JS-assisted) */
+  .reveal-pending[data-reveal],
+  .reveal-pending [data-stagger-item] {
+    opacity: 0;
+    transform: var(--reveal-from);
+  }
+  .reveal-pending:is([data-reveal="blur"], [data-stagger="blur"]):not([data-reveal-mode="fade"]),
+  [data-stagger="blur"]:not([data-reveal-mode="fade"]).reveal-pending [data-stagger-item] {
+    filter: blur(var(--motion-blur));
+  }
+  .reveal-in[data-reveal],
+  .reveal-in [data-stagger-item] {
+    transition:
+      opacity var(--motion-base) var(--motion-ease) var(--reveal-delay, 0s),
+      transform var(--motion-slow) var(--motion-ease) var(--reveal-delay, 0s),
+      filter var(--motion-base) var(--motion-ease) var(--reveal-delay, 0s);
+  }
+
+  /* On-load (pure CSS — plays from first paint, needs no JS) */
+  .reveal-load {
+    animation: reveal-load var(--motion-slow) var(--motion-ease) var(--reveal-delay, 0s) both;
+  }
+  .reveal-load[data-reveal="blur"] {
+    animation-name: reveal-load-blur;
+  }
+  @keyframes reveal-load {
+    from { opacity: 0; transform: var(--reveal-from); }
+  }
+  @keyframes reveal-load-blur {
+    from { opacity: 0; transform: var(--reveal-from); filter: blur(var(--motion-blur)); }
+  }
+
+  /* <SplitText> units */
+  .split-unit {
+    display: inline-block;
+  }
+  .split-load .split-unit {
+    animation: split-in var(--motion-slow) var(--motion-ease) both;
+    animation-delay: calc(var(--reveal-delay, 0s) + var(--i) * var(--split-step));
+  }
+  .reveal-pending .split-unit {
+    opacity: 0;
+    transform: translate3d(0, 0.45em, 0);
+    filter: blur(var(--motion-blur));
+  }
+  .reveal-in .split-unit {
+    transition:
+      opacity var(--motion-base) var(--motion-ease),
+      transform var(--motion-slow) var(--motion-ease),
+      filter var(--motion-base) var(--motion-ease);
+    transition-delay: calc(var(--reveal-delay, 0s) + var(--i) * var(--split-step));
+  }
+  @keyframes split-in {
+    from { opacity: 0; transform: translate3d(0, 0.45em, 0); filter: blur(var(--motion-blur)); }
+  }
+
+  /* <Marquee> */
+  .marquee-track {
+    animation: marquee var(--marquee-duration, var(--marquee-s)) linear infinite;
+  }
+  .marquee:hover .marquee-track,
+  .marquee:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes marquee {
+    to { transform: translateX(calc(-50% - var(--marquee-gap, 0.75rem) / 2)); }
+  }
+
+  /* <AuroraBackground> blobs */
+  .aurora-blob {
+    animation: aurora var(--aurora-s) var(--motion-ease-in-out) infinite alternate;
+    animation-delay: var(--blob-delay, 0s);
+  }
+  @keyframes aurora {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(var(--blob-x, 8%), var(--blob-y, -6%), 0) scale(1.12); }
+    100% { transform: translate3d(calc(var(--blob-x, 8%) * -0.6), calc(var(--blob-y, -6%) * -0.8), 0) scale(0.95); }
+  }
+
+  /* <WaveRibbon> slow horizontal drift (the SVG is two seamless tiles wide) */
+  .wave-drift {
+    animation: wave-drift calc(var(--aurora-s) * 1.6) linear infinite;
+  }
+  @keyframes wave-drift {
+    to { transform: translateX(-50%); }
+  }
+
+  /* <FloatingDecor> gentle bob */
+  .float-bob {
+    animation: float-bob calc(var(--aurora-s) * 0.35) var(--motion-ease-in-out) infinite alternate;
+    animation-delay: var(--bob-delay, 0s);
+  }
+  @keyframes float-bob {
+    from { transform: translate3d(0, -6px, 0) rotate(-3deg); }
+    to { transform: translate3d(0, 8px, 0) rotate(3deg); }
+  }
+
+  /* Links: underline that draws in on hover/focus */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size var(--motion-base) var(--motion-ease);
+  }
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Reveals become plain, quick fades; loops stop. */
+  .reveal-in[data-reveal],
+  .reveal-in [data-stagger-item],
+  .reveal-in .split-unit {
+    transition: opacity var(--motion-fast) linear !important;
+  }
+  .reveal-load,
+  .split-load .split-unit,
+  .marquee-track,
+  .aurora-blob,
+  .wave-drift,
+  .float-bob {
+    animation: none !important;
   }
 }

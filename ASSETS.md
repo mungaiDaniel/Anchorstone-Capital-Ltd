@@ -33,3 +33,10 @@ Resolution is only ~740 px — ask the client for the original, higher-resolutio
 | `team/selestine-mwanga.webp` | Our Team; profile page | Portrait of Selestine K. Mwanga | Client-supplied | Client's own photo |
 | `team/oltele-lemek.webp` | Our Team; profile page | Portrait of Oltele Lemek | Client-supplied | Client's own photo |
 | `team/oltele-gilbert.webp` | Our Team; profile page | Portrait of Oltele Gilbert | Client-supplied | Client's own photo |
+
+## Generated (no external assets)
+
+The home hero's 3D coins, glass spheres and anchor stone, the wave ribbon and the particles are all
+generated in code (three.js geometry, physical materials, a procedural studio environment and GLSL
+shaders), and the "A" coin stamp is drawn on a canvas at runtime. The CSS fallback objects, aurora,
+grid, grain and SVG waves are also code. Nothing was downloaded, so there is no third-party licence.

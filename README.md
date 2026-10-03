@@ -6,7 +6,8 @@ Marketing site for Anchorstone Capital Ltd (formerly branded "Luminous Crown"), 
 
 - Next.js 16 (App Router) + TypeScript
 - Tailwind CSS v4 — design tokens live in `src/app/globals.css` (`@theme`)
-- Motion (`motion/react`) for reveals, transitions and hover effects
+- Motion (`motion/react`) + a shared motion system — see **MOTION.md** (one `MOTION_INTENSITY` dial)
+- three.js + React Three Fiber for the home hero only (lazy, loads on first interaction, GPU-only)
 - Lenis smooth scrolling (disabled for `prefers-reduced-motion`)
 - `next/font`: JetBrains Mono (headings, labels, numbers, buttons) + Inter (body)
 

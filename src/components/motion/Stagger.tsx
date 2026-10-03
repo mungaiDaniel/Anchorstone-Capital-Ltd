@@ -1,36 +1,32 @@
 "use client";
 
-import { m, type HTMLMotionProps, type Variants } from "motion/react";
+import { useRef, type ComponentPropsWithoutRef } from "react";
+import { stagger } from "@/lib/motion";
+import type { RevealVariant } from "./Reveal";
+import { useScrollReveal } from "./useScrollReveal";
 
-const group: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+type GroupProps = ComponentPropsWithoutRef<"div"> & {
+  as?: "div" | "ul" | "ol";
+  variant?: RevealVariant;
+  /** Seconds between children (default: motion token). */
+  step?: number;
+  /** Seconds before the first child. */
+  delay?: number;
 };
 
-const item: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] } },
-};
-
-type GroupProps = HTMLMotionProps<"div"> & { as?: "div" | "ul" | "ol" };
-
-/** Children wrapped in <StaggerItem> animate in one after another when the group scrolls into view. */
-export function StaggerGroup({ as = "div", ...props }: GroupProps) {
-  const Component = m[as] as typeof m.div;
-  return (
-    <Component
-      variants={group}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
-      {...props}
-    />
-  );
+/** Reveals its <StaggerItem> children one after another when the group scrolls into view. */
+export function StaggerGroup({ as: Tag = "div", variant = "up", step = stagger.items, delay = 0, ...props }: GroupProps) {
+  const ref = useRef<HTMLElement>(null);
+  useScrollReveal(ref, (el) => {
+    el.querySelectorAll<HTMLElement>(":scope > [data-stagger-item], :scope > * > [data-stagger-item]").forEach((child, i) => {
+      child.style.setProperty("--reveal-delay", `${delay + i * step}s`);
+    });
+  });
+  return <Tag ref={ref as never} data-stagger={variant} {...(props as object)} />;
 }
 
-type ItemProps = HTMLMotionProps<"div"> & { as?: "div" | "li" };
+type ItemProps = ComponentPropsWithoutRef<"div"> & { as?: "div" | "li" | "article" };
 
-export function StaggerItem({ as = "div", ...props }: ItemProps) {
-  const Component = m[as] as typeof m.div;
-  return <Component variants={item} {...props} />;
+export function StaggerItem({ as: Tag = "div", ...props }: ItemProps) {
+  return <Tag data-stagger-item="" {...(props as object)} />;
 }

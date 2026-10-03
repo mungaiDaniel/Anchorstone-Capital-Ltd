@@ -1,9 +1,14 @@
 import type { Metadata, Viewport } from "next";
+import type { CSSProperties } from "react";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Providers } from "@/components/providers/Providers";
 import { site } from "@/lib/site";
+import { motionCssVariables } from "@/lib/motion";
+import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { CustomCursor } from "@/components/motion/CustomCursor";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import "./globals.css";
 
 const inter = Inter({
@@ -41,7 +46,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${jetbrainsMono.variable} antialiased`}
+      style={motionCssVariables() as CSSProperties}
+    >
       <body className="flex min-h-dvh flex-col">
         <a
           href="#main"
@@ -50,6 +59,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         <Providers>
+          <SmoothScroll />
+          <ScrollProgress />
+          <CustomCursor />
           <Navbar />
           <main id="main" className="flex-1">
             {children}

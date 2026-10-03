@@ -1,24 +1,40 @@
 "use client";
 
-import { m, type HTMLMotionProps } from "motion/react";
+import { useRef, type ComponentPropsWithoutRef, type CSSProperties } from "react";
+import { useScrollReveal } from "./useScrollReveal";
 
-type RevealProps = HTMLMotionProps<"div"> & {
+export type RevealVariant = "up" | "left" | "right" | "scale" | "blur";
+type Tag = "div" | "section" | "article" | "li" | "p" | "span" | "figure";
+
+type RevealProps = ComponentPropsWithoutRef<"div"> & {
+  as?: Tag;
+  variant?: RevealVariant;
+  /** Seconds to wait after the trigger. */
   delay?: number;
-  /** Vertical offset in px the element slides up from. */
+  /** Override the travel distance in px (default from motion tokens). */
   y?: number;
+  /** "scroll" (default): once when scrolled into view. "load": on page load, pure CSS. */
+  trigger?: "scroll" | "load";
 };
 
-/** Fade + slide-up when scrolled into view. Reduced motion handled by MotionConfig. */
-export function Reveal({ delay = 0, y = 24, children, ...props }: RevealProps) {
+/** Fade + move into place. Never hides content before JS runs (see useScrollReveal). */
+export function Reveal({ as: Tag = "div", variant = "up", delay = 0, y, trigger = "scroll", className = "", style, ...props }: RevealProps) {
+  const ref = useRef<HTMLElement>(null);
+  useScrollReveal(trigger === "scroll" ? ref : { current: null });
+
+  const vars = {
+    ...(delay ? { "--reveal-delay": `${delay}s` } : {}),
+    ...(y !== undefined ? { "--motion-distance": `${y}px` } : {}),
+    ...style,
+  } as CSSProperties;
+
   return (
-    <m.div
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
-      {...props}
-    >
-      {children}
-    </m.div>
+    <Tag
+      ref={ref as never}
+      data-reveal={variant}
+      className={`${trigger === "load" ? "reveal-load" : ""} ${className}`}
+      style={vars}
+      {...(props as object)}
+    />
   );
 }
