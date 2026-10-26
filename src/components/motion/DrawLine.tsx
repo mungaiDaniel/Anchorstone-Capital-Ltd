@@ -24,7 +24,7 @@ export function DrawLine({
   path,
   viewBox = "0 0 1000 120",
   scrub = false,
-  strokeClassName = "stroke-brand-500",
+  strokeClassName = "stroke-brand",
   strokeWidth = 2,
 }: DrawLineProps) {
   const ref = useRef<HTMLDivElement>(null);

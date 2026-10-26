@@ -1,80 +1,82 @@
 import type { Metadata } from "next";
-import { contact, site } from "@/lib/site";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { siteConfig } from "@/content/site";
+import { breadcrumbJsonLd, organizationJsonLd, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
-import { PageHero } from "@/components/sections/PageHero";
-import { ContactCards } from "@/components/sections/contact/ContactCards";
-import { ContactForm } from "@/components/sections/contact/ContactForm";
-import { MapEmbed } from "@/components/sections/contact/MapEmbed";
-import { Reveal } from "@/components/motion/Reveal";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { PageHeader } from "@/components/sections/PageHeader";
+import { MapEmbed } from "@/components/sections/MapEmbed";
+import { ContactForm } from "@/components/forms/ContactForm";
 
-const title = `Contact ${site.name} | Get Help with Loans & Credit Today`;
-const description = `Need assistance with loans or credit services? Contact ${site.name} today for fast support, loan inquiries, and financial guidance.`;
+export const metadata: Metadata = pageMetadata({
+  title: "Contact Us",
+  description: `Get in touch with ${siteConfig.shortName}. Visit us in Westlands, Nairobi, call ${siteConfig.contact.phone.display} or send a message.`,
+  path: "/contact-us",
+});
 
-export const metadata: Metadata = {
-  title: { absolute: title },
-  description,
-  alternates: { canonical: "/contact-us" },
-  openGraph: { title, description, url: "/contact-us" },
-  twitter: { title, description },
-};
+const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
 
-const jsonLd = [
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: site.url },
-      { "@type": "ListItem", position: 2, name: "Contact Us", item: `${site.url}/contact-us` },
-    ],
-  },
-  {
-    "@context": "https://schema.org",
-    "@type": "ContactPage",
-    url: `${site.url}/contact-us`,
-    about: {
-      "@type": "FinancialService",
-      name: site.name,
-      telephone: contact.phone.display,
-      email: contact.email.display,
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: contact.address.display,
-        addressLocality: contact.address.locality,
-        addressCountry: "KE",
-      },
+export default async function ContactPage({ searchParams }: PageProps<"/contact-us">) {
+  const sp = await searchParams;
+  const { contact } = siteConfig;
+
+  const details = [
+    { icon: MapPin, label: "Visit us", content: <p>{contact.address.display}</p> },
+    {
+      icon: Phone,
+      label: "Call us",
+      content: (
+        <a href={contact.phone.href} className="font-semibold text-brand hover:underline">
+          {contact.phone.display}
+        </a>
+      ),
     },
-  },
-];
+    {
+      icon: Mail,
+      label: "Email us",
+      content: (
+        <a href={contact.email.href} className="font-semibold break-all text-brand hover:underline">
+          {contact.email.display}
+        </a>
+      ),
+    },
+    ...(contact.officeHours ? [{ icon: Clock, label: "Office hours", content: <p>{contact.officeHours}</p> }] : []),
+  ];
 
-export default function ContactPage() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
-      <PageHero
-        eyebrow="Contact Us"
-        title="Get in touch with us"
-        description="We would love to hear from you!"
-        image={{
-          src: "/images/contact-hero-westlands-nairobi.webp",
-          alt: "Office towers in Westlands, Nairobi, under a bright cloudy sky",
-          position: "center 40%",
-        }}
-        breadcrumb={[{ label: "Contact Us" }]}
-        overlapBelow
+      <JsonLd data={[organizationJsonLd(), breadcrumbJsonLd([{ name: "Contact Us", path: "/contact-us" }])]} />
+      <PageHeader
+        eyebrow="Get in touch"
+        title="Contact Us"
+        description="Questions about a product, an application or a partnership? We’d love to hear from you."
       />
-
-      <div className="bg-lavender-50 pb-20 sm:pb-28">
-        <ContactCards />
-
-        <Container className="mt-16 grid gap-8 sm:mt-20 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-10">
-          <Reveal>
-            <ContactForm />
-          </Reveal>
-          <Reveal delay={0.1} className="min-h-80 lg:min-h-0">
-            <MapEmbed />
-          </Reveal>
+      <section aria-label="Contact" className="bg-paper pb-16 sm:pb-20">
+        <Container className="grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-14">
+          <div>
+            <h2 className="text-3xl">Our details</h2>
+            <ul className="mt-8 space-y-6">
+              {details.map(({ icon: IconCmp, label, content }) => (
+                <li key={label} className="flex items-start gap-4">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-tint text-brand">
+                    <IconCmp aria-hidden="true" className="size-5" strokeWidth={1.5} />
+                  </span>
+                  <div>
+                    <p className="eyebrow text-muted">{label}</p>
+                    <div className="mt-1 text-ink">{content}</div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <ContactForm initialTopic={first(sp.topic)} />
         </Container>
-      </div>
+      </section>
+      <section aria-label="Map" className="bg-paper pb-20 sm:pb-28">
+        <Container>
+          <MapEmbed />
+        </Container>
+      </section>
     </>
   );
 }

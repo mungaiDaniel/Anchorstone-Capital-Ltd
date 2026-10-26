@@ -1,32 +1,40 @@
 /**
- * Loan calculator settings and maths — copied exactly from the original site's
- * Elfsight calculator widget. Change pricing here only.
+ * Loan calculator settings and maths.
+ * Standard reducing-balance amortisation. Figures are indicative only.
  */
-export const calculatorConfig = {
-  amount: { min: 1000, max: 300000, step: 500, initial: 5000 },
-  tenure: { min: 1, max: 12, step: 1, initial: 1 },
-  annualRatePct: 20,
-} as const;
+import { getProduct, type ProductSlug } from "@/content/site";
 
-export type LoanEstimate = { total: number; interest: number };
+// TODO(client): confirm the indicative annual rate per product; 20% p.a. is carried over from the previous calculator.
+export const INDICATIVE_ANNUAL_RATE_PCT = 20;
 
-/**
- * Exact formula from the original widget:
- *   instalment = P × (R/1200 × (1 + R/1200)^(T×12)) / ((1 + R/1200)^(T×12) − 1)
- *   total      = instalment × T × 12
- *   interest   = total − P
- * where P = amount, R = annual rate %, T = tenure slider value.
- * e.g. KES 1,000 at tenure 1 → KSh 1,112 total, KSh 112 interest (matches the live site).
- *
- * NOTE: T×12 means the slider value is treated as years, although the slider is
- * labelled in months. Kept as-is to match the live site — TODO(client): confirm.
- */
-export function calculateLoan(amount: number, tenure: number, annualRatePct: number): LoanEstimate {
-  const r = annualRatePct / 1200;
-  const n = tenure * 12;
-  const instalment = (amount * (r * (1 + r) ** n)) / ((1 + r) ** n - 1);
-  const total = instalment * n;
-  return { total, interest: total - amount };
+export const CALCULATOR_PRODUCTS = ["logbook-loan", "personal-secured-loan", "sme-loan"] as const satisfies readonly ProductSlug[];
+export type CalculatorProduct = (typeof CALCULATOR_PRODUCTS)[number];
+
+export const MIN_AMOUNT = 10_000;
+export const AMOUNT_STEP = 5_000;
+
+export function productLimits(slug: CalculatorProduct) {
+  const p = getProduct(slug);
+  return { maxAmount: p?.maxAmount ?? 300_000, maxTenure: p?.maxTenureMonths ?? 12 };
 }
 
-export const formatKes = (n: number, prefix = "KSh ") => `${prefix}${Math.round(n).toLocaleString("en-KE")}`;
+export interface LoanEstimate {
+  instalment: number;
+  total: number;
+  interest: number;
+}
+
+/**
+ * r = annualRate / 12 / 100
+ * instalment = P·r / (1 − (1 + r)^−n)      (P / n when r = 0)
+ * total = instalment · n;  interest = total − P
+ */
+export function calculateLoan(principal: number, months: number, annualRatePct: number): LoanEstimate {
+  if (!(principal > 0) || !(months > 0)) return { instalment: 0, total: 0, interest: 0 };
+  const r = annualRatePct / 12 / 100;
+  const instalment = r === 0 ? principal / months : (principal * r) / (1 - (1 + r) ** -months);
+  const total = instalment * months;
+  return { instalment, total, interest: total - principal };
+}
+
+export const formatKes = (n: number) => `KES ${Math.round(n).toLocaleString("en-US")}`;

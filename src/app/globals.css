@@ -3,92 +3,52 @@
 
 /*
  * Design tokens — the ONLY place colours and font stacks are defined.
- * Components use the generated utilities (bg-brand-700, text-ink-600, font-mono …).
- *
- * Brand values extracted from the original site's Astra / Elementor CSS:
- *   #00178A  Elementor primary (buttons, headings)      → brand-700
- *   #060097  Astra global colour 0 (links, menu)         → brand-600
- *   #F3F2FF  Elementor accent (lavender sections/cards)  → lavender-100
- *   #F9F6FE  Astra global colour 4 (page background)     → lavender-50
- *   #1E293B  Astra heading colour                        → ink-900
- *   #67768E  Astra body text colour                      → ink-500
- *   #F69821  Elementor secondary (button hover)          → accent-orange
- *   #FFCD57  Astra global colour 7 (link hover)          → accent-gold
- * The other steps of the scale are interpolated from those anchors.
+ * Components use the generated utilities (bg-brand, bg-navy, text-ink, text-muted, bg-tint …).
+ * Palette comes from the Anchorstone logo; see CLAUDE.md.
  */
 @theme {
-  /* Brand navy */
-  --color-brand-50: #f3f2ff;
-  --color-brand-100: #e4e5fb;
-  --color-brand-200: #c3c7f2;
-  --color-brand-300: #969fe4;
-  --color-brand-400: #5d69cc;
-  --color-brand-500: #2c3cb0;
-  --color-brand-600: #060097;
-  --color-brand-700: #00178a;
-  --color-brand-800: #001270;
-  --color-brand-900: #000d52;
-  --color-brand-950: #000833;
-
-  /* Light lavender section backgrounds */
-  --color-lavender-50: #f9f6fe;
-  --color-lavender-100: #f3f2ff;
-  --color-lavender-200: #e6e3fb;
-
-  /* Warm accents — used sparingly for highlights */
-  --color-accent-gold: #ffcd57;
-  --color-accent-orange: #f69821;
-
-  /* Neutral text + lines (ink-600 is darkened from #67768E for AA contrast on lavender) */
-  --color-ink-900: #1e293b;
-  --color-ink-700: #334155;
-  --color-ink-600: #4b5873;
-  --color-ink-500: #67768e;
-  --color-line: #e4e4f2;
-
-  /* Form error state (not a brand colour; AA contrast on white) */
+  --color-brand: #1c24a0;
+  --color-navy: #0b1050;
+  --color-ink: #171a3a;
+  --color-body: #3d4163;
+  --color-muted: #6e7395;
+  --color-tint: #eef0fa;
+  --color-tint-2: #dde0f5;
+  --color-paper: #fbfbfe;
+  --color-line: #d9dcee;
+  /* Accent text on navy */
+  --color-soft: #aeb4f0;
+  /* Form error state (AA contrast on white) */
   --color-danger: #b42318;
 
-  --color-surface: #ffffff;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-garamond), Georgia, "Times New Roman", serif;
 
-  /* Near-black navy at the edges of the home hero */
-  --color-night: #01030f;
-
-  /* Fonts (CSS variables injected by next/font in app/layout.tsx) */
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
-
-  /* Soft, premium shadows tinted with the brand navy */
-  --shadow-soft: 0 1px 2px rgb(0 13 82 / 0.04), 0 8px 24px -8px rgb(0 13 82 / 0.1);
-  --shadow-lift: 0 2px 4px rgb(0 13 82 / 0.05), 0 24px 48px -16px rgb(0 13 82 / 0.22);
+  --shadow-soft: 0 1px 2px rgb(11 16 80 / 0.04), 0 8px 24px -8px rgb(11 16 80 / 0.1);
+  --shadow-lift: 0 2px 4px rgb(11 16 80 / 0.05), 0 24px 48px -16px rgb(11 16 80 / 0.22);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* Slow settle-zoom for hero photos (disabled by the reduced-motion rule below) */
-  --animate-ken-burns: ken-burns 9s linear both;
-  @keyframes ken-burns {
-    from { transform: scale(1.08); }
-    to { transform: scale(1); }
-  }
 }
 
 @layer base {
   html {
     color-scheme: light;
     -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 6rem;
   }
 
   body {
-    background-color: var(--color-surface);
-    color: var(--color-ink-600);
+    background-color: var(--color-paper);
+    color: var(--color-body);
     font-family: var(--font-sans);
     text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4 {
-    font-family: var(--font-mono);
-    color: var(--color-brand-900);
-    letter-spacing: -0.03em;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
     text-wrap-style: balance;
   }
 
@@ -97,29 +57,38 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-brand-500);
+    outline: 2px solid var(--color-brand);
     outline-offset: 3px;
     border-radius: 4px;
   }
+  .on-dark :focus-visible,
+  .on-dark:focus-visible {
+    outline-color: var(--color-soft);
+  }
 
   ::selection {
-    background-color: var(--color-brand-700);
+    background-color: var(--color-brand);
     color: #fff;
   }
 }
 
 @layer components {
-  /* Range slider: navy fill up to --fill (set inline), lavender track beyond */
+  /* Small uppercase, letter-spaced label above serif headings */
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Range slider: brand fill up to --fill (set inline), tint track beyond */
   .range {
     appearance: none;
     width: 100%;
     height: 6px;
     border-radius: 9999px;
-    background: linear-gradient(
-      to right,
-      var(--color-brand-700) var(--fill, 0%),
-      var(--color-lavender-200) var(--fill, 0%)
-    );
+    background: linear-gradient(to right, var(--color-brand) var(--fill, 0%), var(--color-tint-2) var(--fill, 0%));
     cursor: pointer;
   }
   .range::-webkit-slider-thumb {
@@ -127,75 +96,21 @@
     width: 24px;
     height: 24px;
     border-radius: 9999px;
-    background: var(--color-surface);
-    border: 3px solid var(--color-brand-700);
+    background: #fff;
+    border: 3px solid var(--color-brand);
     box-shadow: var(--shadow-soft);
-    transition: transform 0.2s var(--ease-out-expo);
   }
   .range::-moz-range-thumb {
     width: 18px;
     height: 18px;
     border-radius: 9999px;
-    background: var(--color-surface);
-    border: 3px solid var(--color-brand-700);
+    background: #fff;
+    border: 3px solid var(--color-brand);
     box-shadow: var(--shadow-soft);
-  }
-  .range:hover::-webkit-slider-thumb,
-  .range:active::-webkit-slider-thumb {
-    transform: scale(1.15);
-  }
-
-  /* ── Home hero ─────────────────────────────────────────────────────────
-     CSS-only entrance so the copy shows from first paint (no JS needed).
-     Each element sets its start time with the --d custom property. */
-  .hero-in {
-    animation: hero-rise 0.9s var(--ease-out-expo) var(--d, 0s) both;
-  }
-  .hero-word {
-    animation: hero-word 1s var(--ease-out-expo) var(--d, 0s) both;
-  }
-  .hero-fade-in {
-    animation: hero-fade 0.8s ease-out both;
-  }
-  @keyframes hero-rise {
-    from { opacity: 0; transform: translateY(18px); }
-  }
-  @keyframes hero-word {
-    from { opacity: 0; transform: translateY(0.35em); filter: blur(12px); }
-  }
-  @keyframes hero-fade {
-    from { opacity: 0; }
-  }
-
-  /* Small uppercase, letter-spaced mono label used above headings */
-  .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Hero: no entrance delays */
-  .hero-in,
-  .hero-word,
-  .hero-fade-in {
-    animation: none;
-  }
-  /* <Marquee>: a static, wrapped list */
-  .marquee-track {
-    width: auto;
-    justify-content: center;
-  }
-  .marquee-copy {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .marquee-copy + .marquee-copy {
-    display: none;
-  }
   html {
     scroll-behavior: auto;
   }

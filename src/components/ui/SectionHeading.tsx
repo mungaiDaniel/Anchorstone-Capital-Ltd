@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { Reveal } from "@/components/motion/Reveal";
+import { Eyebrow } from "./Eyebrow";
 
 type SectionHeadingProps = {
   eyebrow?: string;
   title: ReactNode;
   description?: ReactNode;
   align?: "left" | "center";
-  /** Heading level; defaults to h2. */
-  as?: "h1" | "h2";
+  tone?: "light" | "dark";
   id?: string;
   className?: string;
 };
@@ -17,23 +17,23 @@ export function SectionHeading({
   title,
   description,
   align = "left",
-  as: Tag = "h2",
+  tone = "light",
   id,
   className = "",
 }: SectionHeadingProps) {
   const centered = align === "center";
   return (
-    <Reveal className={`${centered ? "mx-auto text-center" : ""} max-w-3xl ${className}`}>
-      {eyebrow && (
-        <p className={`eyebrow flex items-center gap-3 text-brand-600 ${centered ? "justify-center" : ""}`}>
-          <span aria-hidden="true" className="h-px w-8 bg-brand-300" />
-          {eyebrow}
-        </p>
-      )}
-      <Tag id={id} className="mt-4 text-3xl font-semibold leading-tight sm:text-4xl lg:text-[2.75rem]">
+    <Reveal className={`max-w-3xl ${centered ? "mx-auto text-center" : ""} ${className}`}>
+      {eyebrow && <Eyebrow tone={tone} className={centered ? "justify-center" : ""}>{eyebrow}</Eyebrow>}
+      <h2
+        id={id}
+        className={`mt-4 text-3xl leading-tight sm:text-4xl lg:text-[2.75rem] ${tone === "dark" ? "!text-white" : ""}`}
+      >
         {title}
-      </Tag>
-      {description && <p className="mt-5 text-lg leading-relaxed text-ink-600">{description}</p>}
+      </h2>
+      {description && (
+        <p className={`mt-5 text-lg leading-relaxed ${tone === "dark" ? "text-soft" : "text-body"}`}>{description}</p>
+      )}
     </Reveal>
   );
 }

@@ -26,7 +26,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
       {animateIn && !reduce && (
         <m.div
           aria-hidden="true"
-          className="pointer-events-none fixed inset-0 z-[60] origin-top bg-linear-to-b from-brand-950 to-brand-800"
+          className="pointer-events-none fixed inset-0 z-[60] origin-top bg-linear-to-b from-navy to-brand"
           initial={{ scaleY: 1 }}
           animate={{ scaleY: 0 }}
           transition={{ duration: duration.page, ease: ease.inOut }}

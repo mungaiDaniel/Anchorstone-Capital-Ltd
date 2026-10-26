@@ -1,20 +1,18 @@
 import Link from "next/link";
 import type { ComponentPropsWithoutRef } from "react";
-import { ArrowRightIcon } from "./icons";
+import { ArrowRight } from "lucide-react";
 
-type Variant = "primary" | "secondary" | "light" | "accent";
+type Variant = "primary" | "secondary" | "ghost-light" | "light";
 type Size = "md" | "lg";
 
 const base =
-  "group inline-flex items-center justify-center gap-2 rounded-full font-mono font-medium tracking-tight transition-all duration-300 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 disabled:pointer-events-none disabled:opacity-60";
+  "group inline-flex items-center justify-center gap-2 rounded-full font-semibold tracking-tight transition-all duration-300 ease-out-expo hover:-translate-y-0.5 active:translate-y-0 disabled:pointer-events-none disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-brand-700 text-white shadow-soft hover:bg-brand-600 hover:shadow-lift",
-  secondary:
-    "border border-brand-200 bg-white text-brand-700 hover:border-brand-700 hover:bg-brand-50",
-  light: "bg-white text-brand-800 shadow-soft hover:bg-lavender-100 hover:shadow-lift",
-  // Gold call-to-action on navy panels (the original calculator's yellow button)
-  accent: "bg-accent-gold text-brand-950 shadow-soft hover:bg-white hover:shadow-lift",
+  primary: "bg-brand text-white shadow-soft hover:bg-navy hover:shadow-lift",
+  secondary: "border border-line bg-white text-brand hover:border-brand hover:bg-tint",
+  "ghost-light": "on-dark border border-white/30 text-white hover:border-white hover:bg-white/10",
+  light: "on-dark bg-white text-navy shadow-soft hover:bg-tint hover:shadow-lift",
 };
 
 const sizes: Record<Size, string> = {
@@ -33,24 +31,14 @@ export function buttonClasses({
 type ButtonLinkProps = ComponentPropsWithoutRef<typeof Link> & {
   variant?: Variant;
   size?: Size;
-  /** Show a trailing arrow that nudges on hover. */
   arrow?: boolean;
 };
 
-export function ButtonLink({
-  variant,
-  size,
-  arrow = false,
-  className,
-  children,
-  ...props
-}: ButtonLinkProps) {
+export function ButtonLink({ variant, size, arrow = false, className, children, ...props }: ButtonLinkProps) {
   return (
     <Link className={buttonClasses({ variant, size, className })} {...props}>
       {children}
-      {arrow && (
-        <ArrowRightIcon className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
-      )}
+      {arrow && <ArrowRight aria-hidden="true" className="size-4 transition-transform duration-300 group-hover:translate-x-1" />}
     </Link>
   );
 }
