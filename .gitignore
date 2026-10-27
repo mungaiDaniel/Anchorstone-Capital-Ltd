@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Photo sourcing (Prompt 13): local candidates and API keys
+/photo-candidates
+/public/photo-candidates
+.env.local
