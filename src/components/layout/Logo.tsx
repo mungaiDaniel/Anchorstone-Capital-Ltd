@@ -5,7 +5,7 @@ import Link from "next/link";
  * Brand logo. Full lockup from `sm` up; the A/C monogram below that if the lockup is too wide.
  * `tone="dark"` = white logo for navy backgrounds. Never recoloured or stretched.
  */
-export function Logo({ tone = "light", className = "" }: { tone?: "light" | "dark"; className?: string }) {
+export function Logo({ tone = "light", className = "", compact = false }: { tone?: "light" | "dark"; className?: string; compact?: boolean }) {
   const suffix = tone === "dark" ? "white" : "blue";
   return (
     <Link href="/" className={`inline-flex items-center ${className}`}>
@@ -25,7 +25,7 @@ export function Logo({ tone = "light", className = "" }: { tone?: "light" | "dar
         height={775}
         priority
         sizes="96px"
-        className="hidden h-14 w-auto sm:block"
+        className={`hidden w-auto sm:block ${compact ? "h-12" : "h-14"}`}
       />
     </Link>
   );

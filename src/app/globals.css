@@ -31,6 +31,36 @@
   --shadow-lift: 0 2px 4px rgb(11 16 80 / 0.05), 0 24px 48px -16px rgb(11 16 80 / 0.22);
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── Legacy motion/hero palette, mapped onto the Anchorstone blue so the original
+     animated hero, effects and cursor keep their look in the new brand colours ── */
+  --color-brand-50: #eef0fa;
+  --color-brand-100: #dde0f5;
+  --color-brand-200: #aeb4f0;
+  --color-brand-300: #8a92e0;
+  --color-brand-400: #5560c8;
+  --color-brand-500: #2c35b0;
+  --color-brand-600: #1c24a0;
+  --color-brand-700: #1c24a0;
+  --color-brand-800: #141a7a;
+  --color-brand-900: #0b1050;
+  --color-brand-950: #070a38;
+  --color-lavender-50: #fbfbfe;
+  --color-lavender-100: #eef0fa;
+  --color-lavender-200: #dde0f5;
+  --color-accent-gold: #ffcd57;
+  --color-accent-orange: #f69821;
+  --color-ink-900: #171a3a;
+  --color-ink-700: #3d4163;
+  --color-ink-600: #3d4163;
+  --color-ink-500: #6e7395;
+  --color-night: #02031a;
+  --font-mono: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --animate-ken-burns: ken-burns 9s linear both;
+  @keyframes ken-burns {
+    from { transform: scale(1.08); }
+    to { transform: scale(1); }
+  }
 }
 
 @layer base {
@@ -81,6 +111,27 @@
 }
 
 @layer components {
+
+  /* ── Home hero: CSS-only entrance so the copy shows from first paint ── */
+  .hero-in {
+    animation: hero-rise 0.9s var(--ease-out-expo) var(--d, 0s) both;
+  }
+  .hero-word {
+    animation: hero-word 1s var(--ease-out-expo) var(--d, 0s) both;
+  }
+  .hero-fade-in {
+    animation: hero-fade 0.8s ease-out both;
+  }
+  @keyframes hero-rise {
+    from { opacity: 0; transform: translateY(18px); }
+  }
+  @keyframes hero-word {
+    from { opacity: 0; transform: translateY(0.35em); filter: blur(12px); }
+  }
+  @keyframes hero-fade {
+    from { opacity: 0; }
+  }
+
   /* Small uppercase, letter-spaced label above serif headings */
   .eyebrow {
     font-family: var(--font-sans);
@@ -119,6 +170,23 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-in,
+  .hero-word,
+  .hero-fade-in {
+    animation: none;
+  }
+  /* <Marquee>: a static, wrapped list */
+  .marquee-track {
+    width: auto;
+    justify-content: center;
+  }
+  .marquee-copy {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .marquee-copy + .marquee-copy {
+    display: none;
+  }
   html {
     scroll-behavior: auto;
   }

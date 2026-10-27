@@ -17,7 +17,7 @@ export function AboutShell({
   /** href of the active tab. */
   current: string;
   eyebrow: string;
-  title: ReactNode;
+  title: string;
   intro?: ReactNode;
   breadcrumbLabel: string;
   children: ReactNode;

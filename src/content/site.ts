@@ -730,3 +730,27 @@ export const applyLink = { label: "Apply for a Loan", href: "/apply-loan" } as c
 // TODO(client): /privacy and /terms are working drafts. Have legal counsel review them before they are relied on
 // (data controller registration, retention periods, processors, governing law, complaints process).
 export const legalDraft = { reviewed: false, updated: "October 2026" };
+
+/* ───────────────────────── Home hero ───────────────────────── */
+
+export const heroCopy = {
+  badge: "Licensed by the Central Bank of Kenya",
+  headline: ["Credit that moves you", "forward."],
+  intro: "Fast, fair and transparent credit for individuals, students and small businesses.",
+  trustLabel: "Why borrowers choose us",
+  trustPoints: [
+    "Licensed by the Central Bank of Kenya",
+    "Same-day approval for qualifying applicants",
+    "Logbook loans up to KES 700,000",
+    "SME funds disbursed in under 24 hours",
+    "Transparent terms",
+    "Ethical lending",
+    "Personal support",
+    "42 years of combined director experience",
+  ],
+  quickLinks: [
+    { label: "Unlock your logbook", href: "/products/logbook-loan", icon: "car" as IconName },
+    { label: "Study abroad", href: "/products/study-abroad-loan", icon: "graduation-cap" as IconName },
+    { label: "Grow your business", href: "/products/sme-loan", icon: "briefcase" as IconName },
+  ],
+};

@@ -71,18 +71,38 @@ export function QuickApplyForm({
         </p>
       )}
 
-      <Field id={id("name")} label="Full name" required error={errors.name}>
-        {(a) => <TextInput {...a} name="name" autoComplete="name" defaultValue={v.name} invalid={!!errors.name} />}
-      </Field>
-      <Field id={id("phone")} label="Phone" required error={errors.phone}>
-        {(a) => (
-          <TextInput {...a} name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder="07XX XXX XXX" defaultValue={v.phone} invalid={!!errors.phone} />
-        )}
-      </Field>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field id={id("name")} label="Full name" required error={errors.name}>
+          {(a) => <TextInput {...a} name="name" autoComplete="name" defaultValue={v.name} invalid={!!errors.name} />}
+        </Field>
+        <Field id={id("phone")} label="Phone" required error={errors.phone}>
+          {(a) => (
+            <TextInput
+              {...a}
+              name="phone"
+              type="tel"
+              inputMode="tel"
+              autoComplete="tel"
+              placeholder="07XX XXX XXX"
+              defaultValue={v.phone}
+              invalid={!!errors.phone}
+            />
+          )}
+        </Field>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field id={id("amount")} label="Amount (KES)" required error={errors.amount}>
           {(a) => (
-            <TextInput {...a} name="amount" type="number" inputMode="numeric" min={1000} step={1000} defaultValue={v.amount ?? preset?.amount} invalid={!!errors.amount} />
+            <TextInput
+              {...a}
+              name="amount"
+              type="number"
+              inputMode="numeric"
+              min={1000}
+              step={1000}
+              defaultValue={v.amount ?? preset?.amount}
+              invalid={!!errors.amount}
+            />
           )}
         </Field>
         <Field id={id("time")} label="Best time to call" required error={errors.contactTime}>
@@ -96,21 +116,23 @@ export function QuickApplyForm({
           )}
         </Field>
       </div>
-      <Field id={id("product")} label="Product" required error={errors.product}>
-        {(a) => (
-          <Select {...a} name="product" defaultValue={v.product ?? preset?.product ?? ""} invalid={!!errors.product}>
-            <option value="">Select a product</option>
-            {quickProductOptions.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </Select>
-        )}
-      </Field>
-      <Field id={id("email")} label="Email (optional)" error={errors.email}>
-        {(a) => <TextInput {...a} name="email" type="email" autoComplete="email" defaultValue={v.email} invalid={!!errors.email} />}
-      </Field>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Field id={id("product")} label="Product" required error={errors.product}>
+          {(a) => (
+            <Select {...a} name="product" defaultValue={v.product ?? preset?.product ?? ""} invalid={!!errors.product}>
+              <option value="">Select a product</option>
+              {quickProductOptions.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </Select>
+          )}
+        </Field>
+        <Field id={id("email")} label="Email (optional)" error={errors.email}>
+          {(a) => <TextInput {...a} name="email" type="email" autoComplete="email" defaultValue={v.email} invalid={!!errors.email} />}
+        </Field>
+      </div>
       <Checkbox id={id("consent")} name="consent" error={errors.consent} defaultChecked={v.consent === "on"}>
         I agree that Anchorstone Capital may contact me about this request. See our{" "}
         <Link href="/privacy" className="font-semibold text-brand underline underline-offset-2">

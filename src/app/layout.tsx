@@ -10,6 +10,7 @@ import { Providers } from "@/components/providers/Providers";
 import { siteConfig } from "@/content/site";
 import { motionCssVariables } from "@/lib/motion";
 import { ScrollProgress } from "@/components/motion/ScrollProgress";
+import { CustomCursor } from "@/components/motion/CustomCursor";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import "./globals.css";
 
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Providers>
           <SmoothScroll />
           <ScrollProgress />
+          <CustomCursor />
           <LoanModalProvider>
             <TopBar />
             <Header />

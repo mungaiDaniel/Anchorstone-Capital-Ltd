@@ -9,7 +9,7 @@ export default function NotFound() {
   return (
     <section className="on-dark relative isolate flex min-h-[70vh] items-center overflow-hidden bg-linear-to-br from-navy to-brand text-white">
       <Watermark className="top-1/2 -right-10 -translate-y-1/2 lg:right-24" />
-      <Container className="relative z-10 py-24">
+      <Container className="relative z-10 pt-40 pb-24">
         <Eyebrow tone="dark">Error 404</Eyebrow>
         <h1 className="mt-5 max-w-2xl text-5xl !text-white sm:text-6xl">We couldn’t find that page</h1>
         <p className="mt-6 max-w-xl text-lg text-on-navy">The page may have moved or the address may be mistyped.</p>
