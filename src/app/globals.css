@@ -18,6 +18,9 @@
   --color-line: #d9dcee;
   /* Accent text on navy */
   --color-soft: #aeb4f0;
+  --color-on-navy: #aeb4f0;
+  /* WhatsApp button only */
+  --color-whatsapp: #25d366;
   /* Form error state (AA contrast on white) */
   --color-danger: #b42318;
 
@@ -64,6 +67,11 @@
   .on-dark :focus-visible,
   .on-dark:focus-visible {
     outline-color: var(--color-soft);
+  }
+
+  .on-light :focus-visible,
+  .on-light:focus-visible {
+    outline-color: var(--color-brand);
   }
 
   ::selection {

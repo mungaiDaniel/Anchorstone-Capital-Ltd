@@ -3,21 +3,22 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronDown, Menu, X } from "lucide-react";
-import { applyLink, nav, products } from "@/content/site";
+import { ArrowRight, ChevronDown, Menu, X } from "lucide-react";
+import { nav, type NavItem } from "@/content/site";
 import { Icon } from "@/components/ui/Icon";
-import { buttonClasses } from "@/components/ui/Button";
+import { ApplyButton } from "@/components/modal/ApplyButton";
 import { Logo } from "./Logo";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const slug = (s: string) => s.replace(/\W+/g, "-").toLowerCase();
 
 export function Header() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileProducts, setMobileProducts] = useState(false);
-  const dropdownRef = useRef<HTMLLIElement>(null);
+  const [openKey, setOpenKey] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState<string | null>(null);
+  const navRef = useRef<HTMLUListElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
 
@@ -33,19 +34,19 @@ export function Header() {
   if (lastPath !== pathname) {
     setLastPath(pathname);
     setMenuOpen(false);
-    setDropdownOpen(false);
+    setOpenKey(null);
   }
 
-  // Desktop dropdown: close on outside click / Escape.
+  // Desktop dropdowns: close on outside click / Escape (focus returns to the trigger).
   useEffect(() => {
-    if (!dropdownOpen) return;
+    if (!openKey) return;
     const onPointer = (e: PointerEvent) => {
-      if (!dropdownRef.current?.contains(e.target as Node)) setDropdownOpen(false);
+      if (!navRef.current?.contains(e.target as Node)) setOpenKey(null);
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setDropdownOpen(false);
-        dropdownRef.current?.querySelector<HTMLElement>("button")?.focus();
+        navRef.current?.querySelector<HTMLElement>(`[data-trigger="${openKey}"]`)?.focus();
+        setOpenKey(null);
       }
     };
     document.addEventListener("pointerdown", onPointer);
@@ -54,14 +55,14 @@ export function Header() {
       document.removeEventListener("pointerdown", onPointer);
       document.removeEventListener("keydown", onKey);
     };
-  }, [dropdownOpen]);
+  }, [openKey]);
 
   const closeMenu = useCallback(() => {
     setMenuOpen(false);
     toggleRef.current?.focus();
   }, []);
 
-  // Mobile menu: lock scroll, trap focus, close on Escape.
+  // Mobile drawer: lock scroll, trap focus, close on Escape.
   useEffect(() => {
     if (!menuOpen) return;
     const prev = document.body.style.overflow;
@@ -90,8 +91,75 @@ export function Header() {
   }, [menuOpen, closeMenu]);
 
   const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
-  const link = (active: boolean) =>
+  const linkCls = (active: boolean) =>
     `text-sm font-semibold transition-colors ${active ? "text-brand" : "text-body hover:text-brand"}`;
+
+  const desktopItem = (item: NavItem) => {
+    if (!item.children) {
+      return (
+        <li key={item.href}>
+          <Link href={item.href} aria-current={pathname === item.href ? "page" : undefined} className={linkCls(isActive(item.href))}>
+            {item.label}
+          </Link>
+        </li>
+      );
+    }
+    const open = openKey === item.label;
+    const menuId = `menu-${slug(item.label)}`;
+    return (
+      <li key={item.href} className="relative">
+        <button
+          type="button"
+          data-trigger={item.label}
+          aria-expanded={open}
+          aria-controls={menuId}
+          onClick={() => setOpenKey(open ? null : item.label)}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") {
+              e.preventDefault();
+              setOpenKey(item.label);
+              requestAnimationFrame(() => document.querySelector<HTMLElement>(`#${menuId} a`)?.focus());
+            }
+          }}
+          className={`inline-flex items-center gap-1 ${linkCls(isActive(item.href))}`}
+        >
+          {item.label}
+          <ChevronDown aria-hidden="true" className={`size-4 transition-transform ${open ? "rotate-180" : ""}`} />
+        </button>
+        {open && (
+          <ul
+            id={menuId}
+            className={`absolute top-full mt-3 rounded-2xl border border-line bg-white p-2 shadow-lift ${
+              item.mega ? "left-1/2 w-[34rem] -translate-x-1/2" : "left-0 w-60"
+            }`}
+          >
+            {item.children.map((c) => (
+              <li key={c.href}>
+                <Link href={c.href} className="flex items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-tint">
+                  {c.icon && (
+                    <span className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-full bg-tint text-brand">
+                      <Icon name={c.icon} className="size-5" />
+                    </span>
+                  )}
+                  <span>
+                    <span className="block text-sm font-semibold text-ink">{c.label}</span>
+                    {c.text && <span className="mt-0.5 block text-xs leading-snug text-muted">{c.text}</span>}
+                  </span>
+                </Link>
+              </li>
+            ))}
+            {item.mega && (
+              <li className="mt-1 border-t border-line pt-1">
+                <Link href={item.href} className="flex items-center gap-2 rounded-xl px-3 py-2.5 text-sm font-semibold text-brand hover:bg-tint">
+                  View all products <ArrowRight aria-hidden="true" className="size-4" />
+                </Link>
+              </li>
+            )}
+          </ul>
+        )}
+      </li>
+    );
+  };
 
   return (
     <>
@@ -100,78 +168,17 @@ export function Header() {
           scrolled ? "border-line shadow-soft" : "border-transparent"
         }`}
       >
-        <nav aria-label="Main" className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-6 lg:px-8">
+        <nav aria-label="Main" className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-6 px-4 sm:h-20 sm:px-6 lg:px-8">
           <Logo />
 
-          <ul className="hidden items-center gap-8 lg:flex">
-            {nav.map((item) =>
-              "children" in item ? (
-                <li key={item.href} ref={dropdownRef} className="relative">
-                  <button
-                    type="button"
-                    aria-expanded={dropdownOpen}
-                    aria-controls="products-menu"
-                    onClick={() => setDropdownOpen((v) => !v)}
-                    onKeyDown={(e) => {
-                      if (e.key === "ArrowDown") {
-                        e.preventDefault();
-                        setDropdownOpen(true);
-                        requestAnimationFrame(() => document.querySelector<HTMLElement>("#products-menu a")?.focus());
-                      }
-                    }}
-                    className={`inline-flex items-center gap-1 ${link(isActive(item.href))}`}
-                  >
-                    {item.label}
-                    <ChevronDown
-                      aria-hidden="true"
-                      className={`size-4 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
-                    />
-                  </button>
-                  {dropdownOpen && (
-                    <ul
-                      id="products-menu"
-                      className="absolute top-full left-1/2 mt-3 w-80 -translate-x-1/2 rounded-2xl border border-line bg-white p-2 shadow-lift"
-                    >
-                      {products.map((p) => (
-                        <li key={p.slug}>
-                          <Link
-                            href={`/products/${p.slug}`}
-                            className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-ink transition-colors hover:bg-tint"
-                          >
-                            <Icon name={p.icon} className="size-5 text-brand" />
-                            {p.name}
-                          </Link>
-                        </li>
-                      ))}
-                      <li className="mt-1 border-t border-line pt-1">
-                        <Link
-                          href="/products"
-                          className="block rounded-xl px-3 py-2.5 text-sm font-semibold text-brand hover:bg-tint"
-                        >
-                          All products
-                        </Link>
-                      </li>
-                    </ul>
-                  )}
-                </li>
-              ) : (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={isActive(item.href) ? "page" : undefined}
-                    className={link(isActive(item.href))}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ),
-            )}
+          <ul ref={navRef} className="hidden items-center gap-6 lg:flex xl:gap-7">
+            {nav.map(desktopItem)}
           </ul>
 
           <div className="flex items-center gap-2">
-            <Link href={applyLink.href} className={buttonClasses({ className: "hidden sm:inline-flex" })}>
-              {applyLink.label}
-            </Link>
+            <ApplyButton arrow className="hidden sm:inline-flex">
+              Apply for a Loan
+            </ApplyButton>
             <button
               ref={toggleRef}
               type="button"
@@ -195,40 +202,40 @@ export function Header() {
           role="dialog"
           aria-modal="true"
           aria-label="Site menu"
-          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-white px-4 pt-4 pb-10 sm:top-20 lg:hidden"
+          data-lenis-prevent
+          className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-white px-4 pt-2 pb-10 sm:top-20 lg:hidden"
         >
           <ul className="flex flex-col">
             {nav.map((item) =>
-              "children" in item ? (
+              item.children ? (
                 <li key={item.href} className="border-b border-line">
                   <button
                     type="button"
-                    aria-expanded={mobileProducts}
-                    aria-controls="mobile-products"
-                    onClick={() => setMobileProducts((v) => !v)}
+                    aria-expanded={mobileOpen === item.label}
+                    aria-controls={`m-${slug(item.label)}`}
+                    onClick={() => setMobileOpen(mobileOpen === item.label ? null : item.label)}
                     className="flex w-full items-center justify-between py-4 font-heading text-2xl text-ink"
                   >
                     {item.label}
-                    <ChevronDown
-                      aria-hidden="true"
-                      className={`size-5 transition-transform ${mobileProducts ? "rotate-180" : ""}`}
-                    />
+                    <ChevronDown aria-hidden="true" className={`size-5 transition-transform ${mobileOpen === item.label ? "rotate-180" : ""}`} />
                   </button>
-                  {mobileProducts && (
-                    <ul id="mobile-products" className="pb-3 pl-2">
-                      {products.map((p) => (
-                        <li key={p.slug}>
-                          <Link href={`/products/${p.slug}`} className="flex items-center gap-3 py-2.5 text-body">
-                            <Icon name={p.icon} className="size-5 text-brand" />
-                            {p.name}
+                  {mobileOpen === item.label && (
+                    <ul id={`m-${slug(item.label)}`} className="pb-3 pl-2">
+                      {item.children.map((c) => (
+                        <li key={c.href}>
+                          <Link href={c.href} className="flex items-center gap-3 py-2.5 text-body">
+                            {c.icon && <Icon name={c.icon} className="size-5 text-brand" />}
+                            {c.label}
                           </Link>
                         </li>
                       ))}
-                      <li>
-                        <Link href="/products" className="block py-2.5 font-semibold text-brand">
-                          All products
-                        </Link>
-                      </li>
+                      {item.mega && (
+                        <li>
+                          <Link href={item.href} className="block py-2.5 font-semibold text-brand">
+                            View all products →
+                          </Link>
+                        </li>
+                      )}
                     </ul>
                   )}
                 </li>
@@ -236,7 +243,7 @@ export function Header() {
                 <li key={item.href} className="border-b border-line">
                   <Link
                     href={item.href}
-                    aria-current={isActive(item.href) ? "page" : undefined}
+                    aria-current={pathname === item.href ? "page" : undefined}
                     className="block py-4 font-heading text-2xl text-ink"
                   >
                     {item.label}
@@ -245,9 +252,9 @@ export function Header() {
               ),
             )}
           </ul>
-          <Link href={applyLink.href} className={buttonClasses({ size: "lg", className: "mt-8 w-full" })}>
-            {applyLink.label}
-          </Link>
+          <ApplyButton size="lg" arrow className="mt-8 w-full">
+            Apply for a Loan
+          </ApplyButton>
         </div>
       )}
     </>

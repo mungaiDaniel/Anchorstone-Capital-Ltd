@@ -14,7 +14,7 @@ import {
 } from "@/lib/loan-calculator";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { ButtonLink } from "@/components/ui/Button";
+import { ApplyButton } from "@/components/modal/ApplyButton";
 
 const fill = (value: number, min: number, max: number) => ({ "--fill": `${((value - min) / (max - min)) * 100}%` }) as CSSProperties;
 
@@ -33,8 +33,6 @@ export function LoanCalculator() {
     setAmount((a) => Math.min(a, limits.maxAmount));
     setTenure((t) => Math.min(t, limits.maxTenure));
   };
-
-  const query = new URLSearchParams({ product, amount: String(amount), tenure: String(tenure) });
 
   return (
     <section id="calculator" aria-labelledby="calc-title" className="bg-tint py-20 sm:py-28">
@@ -122,24 +120,24 @@ export function LoanCalculator() {
 
           <div className="on-dark flex flex-col justify-between gap-8 bg-navy p-6 text-white sm:p-10">
             <div aria-live="polite">
-              <p className="eyebrow text-soft">Monthly instalment</p>
+              <p className="eyebrow text-on-navy">Monthly instalment</p>
               <p className="mt-2 font-heading text-5xl text-white">{formatKes(estimate.instalment)}</p>
               <dl className="mt-8 space-y-4 text-sm">
                 <div className="flex justify-between gap-4 border-t border-white/15 pt-4">
-                  <dt className="text-soft">Total repayment</dt>
+                  <dt className="text-on-navy">Total repayment</dt>
                   <dd className="font-semibold">{formatKes(estimate.total)}</dd>
                 </div>
                 <div className="flex justify-between gap-4 border-t border-white/15 pt-4">
-                  <dt className="text-soft">Total interest</dt>
+                  <dt className="text-on-navy">Total interest</dt>
                   <dd className="font-semibold">{formatKes(estimate.interest)}</dd>
                 </div>
               </dl>
             </div>
             <div>
-              <ButtonLink href={`/apply-loan?${query.toString()}`} variant="light" size="lg" arrow className="w-full">
-                Apply now
-              </ButtonLink>
-              <p className="mt-4 text-xs leading-relaxed text-soft">
+              <ApplyButton preset={{ product, amount }} variant="light" size="lg" className="w-full">
+                Apply with these figures →
+              </ApplyButton>
+              <p className="mt-4 text-xs leading-relaxed text-on-navy">
                 Figures are indicative. Final terms depend on your application and our credit assessment.
               </p>
             </div>

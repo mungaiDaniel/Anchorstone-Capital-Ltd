@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { contactTopics, lendingProducts, getProduct } from "@/content/site";
+import { contactTimes, contactTopics, getProduct, lendingProducts, products, TALENT_POOL, partnerPitch, careers } from "@/content/site";
 
 /** Shared between the browser (instant feedback) and the server actions (the real check). */
 
@@ -38,8 +38,8 @@ export const contactSchema = z.object({
   consent: checked("Please agree so we can contact you about your enquiry."),
 });
 
+export const INCOME_RANGES = ["Below KES 30,000", "KES 30,000 – 60,000", "KES 60,000 – 100,000", "KES 100,000 – 200,000", "Above KES 200,000"] as const;
 export const EMPLOYMENT_TYPES = ["Salaried employee", "Self-employed / business owner", "Student or sponsored", "Other"] as const;
-export const HEARD_FROM = ["Referral from friend or family", "Social media", "Google search", "Radio / TV", "Walk-in", "Other"] as const;
 
 export const COUNTIES = [
   "Baringo", "Bomet", "Bungoma", "Busia", "Elgeyo-Marakwet", "Embu", "Garissa", "Homa Bay", "Isiolo", "Kajiado",
@@ -71,7 +71,7 @@ export const applySchema = z
     tenure: z.coerce.number("Enter a repayment period in months.").int("Enter a whole number of months.").min(1, "Choose at least 1 month."),
     employmentType: z.enum(EMPLOYMENT_TYPES, "Choose an option."),
     county: z.enum(COUNTIES, "Choose your county."),
-    heardFrom: z.enum(HEARD_FROM, "Let us know how you heard about us."),
+    incomeRange: z.enum(INCOME_RANGES, "Choose an income range."),
     consentCredit: checked("We need your consent to run a credit check."),
     consentPrivacy: checked("Please accept the privacy notice."),
   })
@@ -113,3 +113,63 @@ export function parseForm<S extends z.ZodType>(
   }
   return { ok: false, errors, values: raw };
 }
+
+/* ── Quick apply (modal + home card): a call-back request ── */
+const quickProducts = [...lendingProducts.map((p) => p.slug), "insurance"] as unknown as [string, ...string[]];
+export const quickApplySchema = z.object({
+  name: fullName,
+  phone,
+  amount: z.coerce.number("Enter the amount you need.").int("Enter a whole number.").min(1_000, "The minimum amount is KES 1,000.").max(50_000_000, "Please enter a smaller amount."),
+  product: z.enum(quickProducts, "Choose a product."),
+  contactTime: z.enum(contactTimes, "Choose a preferred time."),
+  email: z.string().trim().refine((v) => v === "" || z.email().safeParse(v).success, "Enter a valid email address."),
+  consent: checked("Please agree so we can contact you."),
+}).superRefine((v, ctx) => {
+  const p = getProduct(v.product);
+  if (p?.maxAmount && v.amount > p.maxAmount) {
+    ctx.addIssue({ code: "custom", path: ["amount"], message: `The maximum for the ${p.name} is KES ${p.maxAmount.toLocaleString("en-US")}.` });
+  }
+});
+
+/* ── Partners ── */
+export const PARTNER_TYPES = partnerPitch.types.map((t) => t.title) as [string, ...string[]];
+export const partnerSchema = z.object({
+  organisation: z.string().trim().min(2, "Enter your organisation’s name.").max(160),
+  name: fullName,
+  email,
+  phone,
+  partnerType: z.enum(PARTNER_TYPES, "Choose a partner type."),
+  message: z.string().trim().min(10, "Please tell us a little more (at least 10 characters).").max(3000, "Please keep it under 3,000 characters."),
+  consent: checked("Please agree so we can contact you."),
+});
+
+/* ── Careers ── */
+export const CV_MAX_BYTES = 5 * 1024 * 1024;
+export const CV_TYPES: Record<string, string> = {
+  pdf: "application/pdf",
+  docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+};
+export const careerAreas = [...careers.roles.map((r) => r.title), TALENT_POOL];
+export const careersSchema = z.object({
+  name: fullName,
+  email,
+  phone,
+  area: z.string().refine((v) => careerAreas.includes(v), "Choose a role or area of interest."),
+  linkedin: z.string().trim().refine((v) => v === "" || /^https?:\/\/(www\.)?linkedin\.com\/.+/i.test(v), "Enter a full LinkedIn URL, e.g. https://www.linkedin.com/in/yourname."),
+  note: z.string().trim().max(1_000, "Please keep your note under 1,000 characters."),
+  consent: checked("Please agree to our privacy notice so we can process your application."),
+});
+
+/** Validates a CV upload (shared by browser and server). Returns an error message or undefined. */
+export function validateCv(file: File | null | undefined): string | undefined {
+  if (!file || file.size === 0) return "Attach your CV (PDF or DOCX).";
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+  if (!(ext in CV_TYPES)) return "Your CV must be a PDF or DOCX file.";
+  if (file.size > CV_MAX_BYTES) return "Your CV must be 5 MB or smaller.";
+}
+
+/** Product options for call-back forms: lending products + insurance enquiry. */
+export const quickProductOptions = [...lendingProducts, ...products.filter((p) => !p.isLoan)].map((p) => ({
+  value: p.slug,
+  label: p.isLoan ? p.name : "Insurance enquiry",
+}));

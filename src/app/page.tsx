@@ -1,26 +1,31 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { Download } from "lucide-react";
-import { products, profilePdf, siteConfig, team } from "@/content/site";
+import Link from "next/link";
+import { Check } from "lucide-react";
+import { ceo, featureHighlights, howItWorks, products, siteConfig, whyUs } from "@/content/site";
 import { absoluteUrl, organizationJsonLd } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ButtonLink } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { IconBadge } from "@/components/ui/IconBadge";
+import { Icon } from "@/components/ui/Icon";
+import { Pill } from "@/components/ui/Pill";
+import { Steps } from "@/components/ui/Steps";
+import { StatBand } from "@/components/ui/StatBand";
+import { CTABand } from "@/components/ui/CTABand";
 import { Watermark } from "@/components/ui/Watermark";
 import { DiagonalDivider } from "@/components/ui/DiagonalDivider";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { StatsStrip } from "@/components/sections/StatsStrip";
-import { ProductCard } from "@/components/sections/ProductCard";
-import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
+import { ApplyButton } from "@/components/modal/ApplyButton";
+import { QuickApplyForm } from "@/components/forms/QuickApplyForm";
+import { ProductCard } from "@/components/products/ProductCard";
 import { LoanCalculator } from "@/components/sections/LoanCalculator";
-import { HowToApply } from "@/components/sections/HowToApply";
-import { PartnersStrip } from "@/components/sections/PartnersStrip";
-import { CtaBand } from "@/components/sections/CtaBand";
 
-const title = "Credit that moves you forward";
+const title = "Logbook, SME & Study Abroad Loans in Kenya — Credit that moves you forward";
 
 export const metadata: Metadata = {
   title: { absolute: `${siteConfig.shortName} — ${title}` },
@@ -30,10 +35,13 @@ export const metadata: Metadata = {
   twitter: { title: `${siteConfig.shortName} — ${title}`, description: siteConfig.description },
 };
 
-const trust = ["42 years combined director experience", "Same-day approval", "CBK licensed"];
+const quickLinks = [
+  { label: "Unlock your logbook", href: "/products/logbook-loan", icon: "car" },
+  { label: "Study abroad", href: "/products/study-abroad-loan", icon: "graduation-cap" },
+  { label: "Grow your business", href: "/products/sme-loan", icon: "briefcase" },
+] as const;
 
 export default function HomePage() {
-  const leader = team.find((m) => m.featured) ?? team[0];
   const { contact } = siteConfig;
 
   const localBusiness = {
@@ -58,52 +66,81 @@ export default function HomePage() {
     <>
       <JsonLd data={[organizationJsonLd(), localBusiness]} />
 
-      {/* Hero */}
+      {/* 1. Hero */}
       <section className="on-dark relative isolate overflow-hidden bg-linear-to-br from-navy via-navy to-brand text-white">
-        <Watermark className="top-1/2 -right-16 -translate-y-1/2 lg:right-16 lg:w-[34rem]" />
-        <Container className="relative z-10 pt-20 pb-32 sm:pt-28 sm:pb-44 lg:pt-32 lg:pb-52">
-          <Reveal trigger="load" className="max-w-3xl">
+        <Watermark className="top-10 -left-24 lg:left-1/3" />
+        <Container className="relative z-10 grid items-center gap-12 pt-14 pb-32 sm:pt-20 sm:pb-40 lg:grid-cols-[1.15fr_1fr] lg:gap-16 lg:pb-48">
+          <Reveal trigger="load">
             <Eyebrow tone="dark">Licensed by the Central Bank of Kenya</Eyebrow>
-            <h1 className="mt-6 text-5xl leading-[1.05] !text-white sm:text-6xl lg:text-7xl">
-              Credit that moves you <em className="text-soft">forward.</em>
+            <p className="mt-5 font-heading text-2xl text-on-navy">{siteConfig.motto}</p>
+            <h1 className="mt-3 text-5xl leading-[1.05] !text-white sm:text-6xl lg:text-7xl">
+              Credit that moves you <em className="text-on-navy">forward.</em>
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-relaxed text-soft sm:text-xl">{siteConfig.tagline}</p>
-            <div className="mt-10 flex flex-wrap gap-3">
-              <ButtonLink href="/apply-loan" variant="light" size="lg" arrow>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-on-navy">
+              Fast, fair and transparent credit for individuals, students and small businesses.
+            </p>
+            <div className="mt-9 flex flex-wrap gap-3">
+              <ApplyButton variant="light" size="lg" arrow>
                 Apply for a Loan
-              </ButtonLink>
+              </ApplyButton>
               <ButtonLink href="#products" variant="ghost-light" size="lg">
                 Explore our products
               </ButtonLink>
             </div>
-            <ul className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm font-semibold text-white">
-              {trust.map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <span aria-hidden="true" className="size-1.5 rounded-full bg-soft" />
-                  {t}
+            <ul className="mt-9 flex flex-wrap gap-3">
+              {quickLinks.map((q) => (
+                <li key={q.href}>
+                  <Link
+                    href={q.href}
+                    className="inline-flex items-center gap-2 rounded-full border border-white/25 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10"
+                  >
+                    <Icon name={q.icon} className="size-4" />
+                    {q.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           </Reveal>
+
+          <Reveal trigger="load" delay={0.15} className="on-light rounded-2xl bg-white p-6 text-body shadow-lift sm:p-8">
+            <QuickApplyForm heading="Apply for a Loan" className="[&_h2]:text-ink" />
+          </Reveal>
         </Container>
-        <DiagonalDivider fill="#ffffff" />
+        <DiagonalDivider fill="var(--color-paper)" />
       </section>
 
-      <StatsStrip />
-
-      {/* Products */}
-      <section id="products" aria-labelledby="products-title" className="bg-paper py-20 sm:py-28">
+      {/* 2. Feature highlights */}
+      <section aria-label="Why Anchorstone" className="bg-paper pt-6 pb-20 sm:pb-24">
         <Container>
-          <SectionHeading
-            id="products-title"
-            eyebrow="Our products"
-            title="Five ways we can help"
-            description="Credit and protection, built around how you earn, study, drive and run your business."
-            align="center"
-          />
-          <StaggerGroup as="ul" className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-6">
-            {products.map((p, i) => (
-              <StaggerItem as="li" key={p.slug} className={`lg:col-span-2 ${i === 3 ? "lg:col-start-2" : ""}`}>
+          <StaggerGroup as="ul" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {featureHighlights.map((f) => (
+              <StaggerItem as="li" key={f.title}>
+                <Card className="h-full">
+                  <IconBadge name={f.icon} />
+                  <h2 className="mt-5 text-xl">{f.title}</h2>
+                  <p className="mt-2 text-body">{f.text}</p>
+                </Card>
+              </StaggerItem>
+            ))}
+          </StaggerGroup>
+          <p className="mt-8 flex justify-center">
+            <Pill>42 years combined director experience</Pill>
+          </p>
+        </Container>
+      </section>
+
+      {/* 3. Products */}
+      <section id="products" aria-labelledby="products-title" className="bg-white py-20 sm:py-28">
+        <Container>
+          <div className="flex flex-wrap items-end justify-between gap-6">
+            <SectionHeading id="products-title" eyebrow="Our Products" title="Financial solutions for every goal." />
+            <ButtonLink href="/products" variant="link-arrow" arrow>
+              View all products
+            </ButtonLink>
+          </div>
+          <StaggerGroup as="ul" className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {products.map((p) => (
+              <StaggerItem as="li" key={p.slug}>
                 <ProductCard product={p} />
               </StaggerItem>
             ))}
@@ -111,63 +148,92 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <WhyChooseUs tone="tint" />
-      <LoanCalculator />
-      <HowToApply />
+      {/* 4. Stats (server-rendered; count-up is an enhancement) */}
+      <StatBand tone="dark" />
 
-      {/* Leadership teaser */}
-      <section aria-labelledby="leader-title" className="bg-tint py-20 sm:py-28">
+      {/* 5. Calculator */}
+      <LoanCalculator />
+
+      {/* 6. Why choose */}
+      <section aria-labelledby="why-title" className="bg-paper py-20 sm:py-28">
+        <Container className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:gap-16">
+          <div>
+            <SectionHeading id="why-title" eyebrow="Why Anchorstone" title="Your reliable financial partner." />
+            <ul className="mt-10 grid gap-x-8 gap-y-7 sm:grid-cols-2">
+              {whyUs.map((w) => (
+                <li key={w.title} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full bg-brand text-white">
+                    <Check aria-hidden="true" className="size-4" strokeWidth={2.5} />
+                  </span>
+                  <div>
+                    <h3 className="text-xl">{w.title}</h3>
+                    <p className="mt-1 text-body">{w.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <Reveal className="on-dark relative isolate self-start overflow-hidden rounded-3xl bg-navy p-8 text-white sm:p-10">
+            <Watermark className="-right-10 -bottom-16 !w-64" />
+            <IconBadge name="landmark" tone="dark" />
+            <p className="eyebrow mt-6 text-on-navy">Regulated</p>
+            <p className="mt-2 font-heading text-3xl text-white">Licensed by the Central Bank of Kenya</p>
+            <p className="mt-3 text-on-navy">Anchorstone Capital Limited operates as a licensed credit provider.</p>
+          </Reveal>
+        </Container>
+      </section>
+
+      {/* 7. CEO teaser */}
+      <section aria-labelledby="ceo-title" className="bg-tint py-20 sm:py-28">
         <Container>
-          <Reveal className="grid items-center gap-10 overflow-hidden rounded-3xl bg-white shadow-lift md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
-            <div className="relative aspect-[4/5] md:aspect-auto md:h-full md:min-h-[26rem]">
+          <Reveal className="grid overflow-hidden rounded-3xl bg-white shadow-lift md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+            <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[26rem]">
               <Image
-                src={leader.photo.src}
-                alt={leader.photo.alt}
+                src={ceo.photo.src}
+                alt={ceo.photo.alt}
                 fill
                 sizes="(min-width: 768px) 40vw, 100vw"
                 className="object-cover"
-                style={{ objectPosition: leader.photo.position }}
+                style={{ objectPosition: ceo.photo.position }}
               />
             </div>
             <div className="p-8 sm:p-12">
-              <Eyebrow>Meet our leadership</Eyebrow>
-              <h2 id="leader-title" className="mt-4 text-3xl sm:text-4xl">
-                {leader.name}
+              <Eyebrow>Leadership</Eyebrow>
+              <h2 id="ceo-title" className="mt-4 text-3xl sm:text-4xl">
+                {ceo.name}
               </h2>
-              <p className="mt-1 font-semibold text-brand">{leader.role}</p>
-              <p className="mt-5 line-clamp-4 text-body">{leader.summary}</p>
-              <ButtonLink href="/our-team" variant="secondary" arrow className="mt-8">
-                Meet the team
-              </ButtonLink>
+              <p className="mt-1 font-semibold text-brand">{ceo.role}</p>
+              <p className="mt-5 line-clamp-3 text-body">{ceo.summary}</p>
+              <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3">
+                <ButtonLink href="/about-us/ceo" arrow>
+                  Meet our CEO
+                </ButtonLink>
+                <ButtonLink href="/about-us/team" variant="link-arrow" arrow>
+                  Meet the team
+                </ButtonLink>
+              </div>
             </div>
           </Reveal>
         </Container>
       </section>
 
-      {/* Profile download */}
-      <section aria-label="Company profile" className="bg-paper py-14">
+      {/* 8. How it works */}
+      <section aria-labelledby="how-title" className="bg-paper py-20 sm:py-28">
         <Container>
-          <div className="flex flex-col items-start justify-between gap-6 rounded-2xl border border-line bg-white p-6 shadow-soft sm:flex-row sm:items-center sm:p-8">
-            <div>
-              <p className="font-heading text-2xl text-ink">Learn more about Anchorstone</p>
-              <p className="mt-1 text-body">Our products, leadership and approach, in one document.</p>
-            </div>
-            <a
-              href={profilePdf}
-              download
-              className="inline-flex h-12 shrink-0 items-center gap-2 rounded-full bg-brand px-6 text-sm font-semibold text-white transition hover:bg-navy"
-            >
-              <Download aria-hidden="true" className="size-4" />
-              Download our company profile (PDF)
-            </a>
+          <SectionHeading id="how-title" eyebrow="How it works" title="Your next step, made clear." align="center" />
+          <div className="mt-14">
+            <Steps steps={howItWorks} />
           </div>
+          <p className="mt-12 text-center">
+            <ButtonLink href="/faq" variant="link-arrow" arrow>
+              Read our FAQs
+            </ButtonLink>
+          </p>
         </Container>
       </section>
 
-      <PartnersStrip slim />
-      <div className="pt-20 sm:pt-28">
-        <CtaBand />
-      </div>
+      {/* 9. Closing CTA */}
+      <CTABand />
     </>
   );
 }

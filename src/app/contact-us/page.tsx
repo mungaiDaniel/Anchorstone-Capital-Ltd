@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import { siteConfig } from "@/content/site";
+import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { siteConfig, whatsappUrl } from "@/content/site";
 import { breadcrumbJsonLd, organizationJsonLd, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
+import { PageHero } from "@/components/ui/PageHero";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { PageHeader } from "@/components/sections/PageHeader";
 import { MapEmbed } from "@/components/sections/MapEmbed";
 import { ContactForm } from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact Us",
+  title: "Contact Us — Anchorstone Capital, Westlands, Nairobi",
   description: `Get in touch with ${siteConfig.shortName}. Visit us in Westlands, Nairobi, call ${siteConfig.contact.phone.display} or send a message.`,
   path: "/contact-us",
 });
@@ -19,6 +19,7 @@ const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v
 export default async function ContactPage({ searchParams }: PageProps<"/contact-us">) {
   const sp = await searchParams;
   const { contact } = siteConfig;
+  const wa = whatsappUrl();
 
   const details = [
     { icon: MapPin, label: "Visit us", content: <p>{contact.address.display}</p> },
@@ -40,17 +41,26 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact-
         </a>
       ),
     },
+    ...(wa
+      ? [
+          {
+            icon: MessageCircle,
+            label: "WhatsApp",
+            content: (
+              <a href={wa} target="_blank" rel="noopener noreferrer" className="font-semibold text-brand hover:underline">
+                Chat with us<span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            ),
+          },
+        ]
+      : []),
     ...(contact.officeHours ? [{ icon: Clock, label: "Office hours", content: <p>{contact.officeHours}</p> }] : []),
   ];
 
   return (
     <>
       <JsonLd data={[organizationJsonLd(), breadcrumbJsonLd([{ name: "Contact Us", path: "/contact-us" }])]} />
-      <PageHeader
-        eyebrow="Get in touch"
-        title="Contact Us"
-        description="Questions about a product, an application or a partnership? We’d love to hear from you."
-      />
+      <PageHero eyebrow="Contact Us" title="Talk to us." intro="Questions about a product, an application or a partnership? We’d love to hear from you." breadcrumb={[{ label: "Contact Us" }]} />
       <section aria-label="Contact" className="bg-paper pb-16 sm:pb-20">
         <Container className="grid items-start gap-10 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)] lg:gap-14">
           <div>

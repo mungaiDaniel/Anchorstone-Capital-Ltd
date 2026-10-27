@@ -31,7 +31,25 @@ export type SendResult = { ok: true } | { ok: false };
  * Env: RESEND_API_KEY (required in production), RESEND_FROM (optional, a verified sender).
  * With no key: the submission is logged and treated as sent in development only.
  */
-export async function sendToInbox({ subject, text, replyTo }: { subject: string; text: string; replyTo?: string }): Promise<SendResult> {
+export interface Attachment {
+  filename: string;
+  /** base64 */
+  content: string;
+}
+
+export async function sendToInbox({
+  subject,
+  text,
+  replyTo,
+  to = siteConfig.contact.email.address,
+  attachments,
+}: {
+  subject: string;
+  text: string;
+  replyTo?: string;
+  to?: string;
+  attachments?: Attachment[];
+}): Promise<SendResult> {
   const key = process.env.RESEND_API_KEY;
   if (!key) {
     if (process.env.NODE_ENV !== "production") {
@@ -48,10 +66,11 @@ export async function sendToInbox({ subject, text, replyTo }: { subject: string;
       headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
       body: JSON.stringify({
         from: process.env.RESEND_FROM ?? `${siteConfig.shortName} Website <onboarding@resend.dev>`,
-        to: [siteConfig.contact.email.address],
+        to: [to],
         subject,
         text,
         ...(replyTo ? { reply_to: replyTo } : {}),
+        ...(attachments?.length ? { attachments } : {}),
       }),
     });
     if (!res.ok) {

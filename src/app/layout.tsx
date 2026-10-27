@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import type { CSSProperties } from "react";
 import { EB_Garamond, Manrope } from "next/font/google";
+import { TopBar } from "@/components/layout/TopBar";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
+import { LoanModalProvider } from "@/components/modal/LoanModalProvider";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Providers } from "@/components/providers/Providers";
@@ -65,11 +68,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Providers>
           <SmoothScroll />
           <ScrollProgress />
-          <Header />
-          <main id="main" className="flex-1">
-            {children}
-          </main>
-          <Footer />
+          <LoanModalProvider>
+            <TopBar />
+            <Header />
+            <main id="main" className="flex-1">
+              {children}
+            </main>
+            <Footer />
+            <WhatsAppButton />
+          </LoanModalProvider>
         </Providers>
       </body>
     </html>

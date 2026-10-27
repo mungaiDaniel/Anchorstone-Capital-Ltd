@@ -1,5 +1,12 @@
 import {
   Award,
+  Building2,
+  Gauge,
+  Handshake,
+  MessageCircle,
+  ShieldCheck,
+  Sprout,
+  Target,
   Briefcase,
   Car,
   Coins,
@@ -32,6 +39,13 @@ const icons: Record<IconName, React.ComponentType<LucideProps>> = {
   scale: Scale,
   "line-chart": LineChart,
   coins: Coins,
+  "shield-check": ShieldCheck,
+  gauge: Gauge,
+  handshake: Handshake,
+  building: Building2,
+  sprout: Sprout,
+  target: Target,
+  "message-circle": MessageCircle,
 };
 
 /** Thin-stroke line icon from the content icon name. Decorative. */

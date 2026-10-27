@@ -1,138 +1,127 @@
 import type { Metadata } from "next";
-import { Landmark } from "lucide-react";
-import { about, mission, quote, siteConfig, values, vision } from "@/content/site";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { about, aboutTabs, siteConfig } from "@/content/site";
 import { breadcrumbJsonLd, organizationJsonLd, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { IconBadge } from "@/components/ui/IconBadge";
-import { ButtonLink } from "@/components/ui/Button";
 import { Watermark } from "@/components/ui/Watermark";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { PageHeader } from "@/components/sections/PageHeader";
-import { StatsStrip } from "@/components/sections/StatsStrip";
-import { WhyChooseUs } from "@/components/sections/WhyChooseUs";
-import { PartnersStrip } from "@/components/sections/PartnersStrip";
+import { AboutShell } from "@/components/about/AboutShell";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About Anchorstone",
-  description: `${siteConfig.shortName} is a private financial institution in Nairobi, licensed by the Central Bank of Kenya as a credit provider. Meet the company, our mission and our values.`,
+  title: "About Anchorstone Capital — Licensed Credit Provider in Nairobi",
+  description: `${siteConfig.shortName} is a private financial institution in Nairobi, licensed by the Central Bank of Kenya as a credit provider. Meet the company, our pillars and our expertise.`,
   path: "/about-us",
 });
+
+const previews = [
+  { ...aboutTabs[1], text: "Where we’re headed and how we get there." },
+  { ...aboutTabs[2], text: "The four principles behind every loan." },
+  { ...aboutTabs[3], text: "The experience and vision leading Anchorstone." },
+  { ...aboutTabs[4], text: "The directors and advisers behind our work." },
+];
 
 export default function AboutPage() {
   return (
     <>
       <JsonLd data={[organizationJsonLd(), breadcrumbJsonLd([{ name: "About Us", path: "/about-us" }])]} />
-      <PageHeader eyebrow="Who we are" title="About Anchorstone" fill="var(--color-paper)" />
+      <AboutShell
+        current="/about-us"
+        eyebrow="About Us"
+        title={siteConfig.motto}
+        intro={about.lead}
+        breadcrumbLabel="About Us"
+      >
+        {/* Our story */}
+        <section aria-labelledby="story-title" className="bg-paper py-20 sm:py-24">
+          <Container className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+            <Reveal>
+              <SectionHeading id="story-title" eyebrow="Our story" title="Fast, fair credit, built on experience." />
+              <div className="mt-6 space-y-5 text-lg leading-relaxed">
+                {about.body.map((p) => (
+                  <p key={p}>{p}</p>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={0.1} className="on-dark relative isolate flex min-h-[22rem] items-end overflow-hidden rounded-3xl bg-linear-to-br from-navy to-brand p-8 text-white sm:p-12">
+              <Watermark className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 !opacity-[0.09]" />
+              <div className="relative">
+                <p className="font-heading text-7xl text-white sm:text-8xl">42</p>
+                <p className="eyebrow mt-2 text-on-navy">yrs combined director experience</p>
+              </div>
+            </Reveal>
+          </Container>
+        </section>
 
-      {/* Intro */}
-      <section aria-label="Introduction" className="bg-paper pb-16 sm:pb-20">
-        <Container className="grid gap-10 lg:grid-cols-[3fr_2fr] lg:gap-16">
-          <Reveal>
-            <p className="font-heading text-3xl leading-snug text-ink sm:text-4xl">{about.lead}</p>
-            <div className="mt-8 space-y-5 text-lg leading-relaxed">
-              {about.body.map((p) => (
-                <p key={p}>{p}</p>
+        {/* Pillars */}
+        <section aria-labelledby="pillars-title" className="bg-tint py-20 sm:py-24">
+          <Container>
+            <SectionHeading id="pillars-title" eyebrow="What we stand for" title="Three pillars" align="center" />
+            <StaggerGroup as="ul" className="mt-12 grid gap-5 md:grid-cols-3">
+              {about.pillars.map((p) => (
+                <StaggerItem as="li" key={p.title}>
+                  <Card className="h-full">
+                    <IconBadge name={p.icon} />
+                    <h3 className="mt-5 text-2xl">{p.title}</h3>
+                    <p className="mt-2 text-body">{p.text}</p>
+                  </Card>
+                </StaggerItem>
               ))}
-            </div>
-          </Reveal>
-          <Reveal delay={0.1} className="self-start rounded-2xl border border-line bg-white p-7 shadow-soft">
-            <IconBadge name="landmark" />
-            <h2 className="mt-5 text-2xl">Licensed & regulated</h2>
-            <p className="mt-3 text-body">
-              Anchorstone Capital Limited is licensed by the Central Bank of Kenya as a credit provider.
-            </p>
-            {siteConfig.licenceNumber && (
-              <p className="mt-4 text-sm font-semibold text-ink">Licence no. {siteConfig.licenceNumber}</p>
-            )}
-          </Reveal>
-        </Container>
-      </section>
+            </StaggerGroup>
+          </Container>
+        </section>
 
-      <StatsStrip />
-
-      {/* Core expertise */}
-      <section aria-labelledby="expertise-title" className="bg-paper py-20 sm:py-28">
-        <Container>
-          <SectionHeading id="expertise-title" eyebrow="Our foundation" title="Core expertise" align="center" />
-          <StaggerGroup as="ul" className="mt-12 grid gap-5 md:grid-cols-3">
-            {about.expertise.map((e) => (
-              <StaggerItem as="li" key={e.title}>
-                <Card className="flex h-full items-center gap-4">
+        {/* Core expertise + licence */}
+        <section aria-labelledby="expertise-title" className="bg-paper py-20 sm:py-24">
+          <Container>
+            <SectionHeading id="expertise-title" eyebrow="Our foundation" title="Core expertise" />
+            <ul className="mt-10 grid gap-4 md:grid-cols-3">
+              {about.expertise.map((e) => (
+                <li key={e.title} className="flex items-center gap-4 rounded-2xl border border-line bg-white p-5 shadow-soft">
                   <IconBadge name={e.icon} />
                   <p className="font-heading text-xl text-ink">{e.title}</p>
-                </Card>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
-        </Container>
-      </section>
+                </li>
+              ))}
+            </ul>
 
-      {/* Mission & vision */}
-      <section aria-label="Mission and vision" className="bg-tint py-20 sm:py-28">
-        <Container className="grid gap-6 lg:grid-cols-2">
-          <Reveal className="on-dark relative isolate overflow-hidden rounded-3xl bg-navy p-8 text-white sm:p-12">
-            <Watermark className="-right-10 -bottom-16 !w-64" />
-            <Eyebrow tone="dark">Our mission</Eyebrow>
-            <h2 className="mt-4 text-3xl !text-white">Mission</h2>
-            <p className="mt-5 text-lg leading-relaxed text-soft">{mission}</p>
-          </Reveal>
-          <Reveal delay={0.1} className="on-dark relative isolate overflow-hidden rounded-3xl bg-brand p-8 text-white sm:p-12">
-            <Watermark className="-right-10 -bottom-16 !w-64" />
-            <Eyebrow tone="dark">Our vision</Eyebrow>
-            <h2 className="mt-4 text-3xl !text-white">Vision</h2>
-            <p className="mt-5 text-lg leading-relaxed text-tint-2">{vision}</p>
-          </Reveal>
-          <Reveal className="lg:col-span-2">
-            <blockquote className="mx-auto max-w-3xl py-8 text-center">
-              <p className="font-heading text-3xl leading-snug text-ink sm:text-4xl">&ldquo;{quote}&rdquo;</p>
-            </blockquote>
-          </Reveal>
-        </Container>
-      </section>
+            <Reveal className="mt-12 flex flex-col gap-5 rounded-2xl bg-tint p-7 sm:flex-row sm:items-center sm:p-9">
+              <IconBadge name="landmark" size="lg" />
+              <div>
+                <h3 className="text-2xl">Licensed &amp; regulated</h3>
+                <p className="mt-2 text-body">
+                  Anchorstone Capital Limited is licensed by the Central Bank of Kenya as a credit provider.
+                </p>
+                {siteConfig.licenceNumber && <p className="mt-2 text-sm font-semibold text-ink">Licence no. {siteConfig.licenceNumber}</p>}
+              </div>
+            </Reveal>
+          </Container>
+        </section>
 
-      {/* Values */}
-      <section aria-labelledby="values-title" className="bg-paper py-20 sm:py-28">
-        <Container>
-          <SectionHeading id="values-title" eyebrow="What guides us" title="Core values" />
-          <StaggerGroup as="ol" className="mt-12 divide-y divide-line border-y border-line">
-            {values.map((v, i) => (
-              <StaggerItem as="li" key={v.title} className="grid gap-3 py-7 sm:grid-cols-[5rem_1fr_2fr] sm:items-baseline sm:gap-8">
-                <span aria-hidden="true" className="font-heading text-4xl text-brand/40">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <h3 className="text-2xl">{v.title}</h3>
-                <p className="text-body">{v.text}</p>
-              </StaggerItem>
-            ))}
-          </StaggerGroup>
-        </Container>
-      </section>
-
-      <WhyChooseUs tone="tint" />
-      <PartnersStrip />
-
-      {/* CTA to team + contact */}
-      <section aria-labelledby="about-cta" className="bg-paper py-20 text-center sm:py-28">
-        <Container>
-          <Landmark aria-hidden="true" className="mx-auto size-8 text-brand" strokeWidth={1.5} />
-          <h2 id="about-cta" className="mx-auto mt-4 max-w-2xl text-3xl sm:text-4xl">
-            Get to know the people behind Anchorstone
-          </h2>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <ButtonLink href="/our-team" size="lg" arrow>
-              Meet our team
-            </ButtonLink>
-            <ButtonLink href="/contact-us" variant="secondary" size="lg">
-              Contact us
-            </ButtonLink>
-          </div>
-        </Container>
-      </section>
+        {/* Previews */}
+        <section aria-label="Learn more about Anchorstone" className="bg-paper pb-4">
+          <Container>
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {previews.map((p) => (
+                <li key={p.href}>
+                  <Link
+                    href={p.href}
+                    className="group flex h-full flex-col gap-2 rounded-2xl border border-line bg-white p-6 shadow-soft transition hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift"
+                  >
+                    <span className="font-heading text-2xl text-ink">{p.label}</span>
+                    <span className="text-sm text-body">{p.text}</span>
+                    <ArrowRight aria-hidden="true" className="mt-auto size-5 text-brand transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Container>
+        </section>
+      </AboutShell>
     </>
   );
 }
