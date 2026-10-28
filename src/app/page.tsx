@@ -13,6 +13,7 @@ import { Pill } from "@/components/ui/Pill";
 import { Steps } from "@/components/ui/Steps";
 import { StatBand } from "@/components/ui/StatBand";
 import { CTABand } from "@/components/ui/CTABand";
+import { getImage } from "@/content/images";
 import { Watermark } from "@/components/ui/Watermark";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
@@ -183,7 +184,7 @@ export default function HomePage() {
       </section>
 
       {/* 9. Closing CTA */}
-      <CTABand />
+      <CTABand image={getImage("home-hero")} />
     </>
   );
 }

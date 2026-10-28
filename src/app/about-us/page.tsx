@@ -9,6 +9,8 @@ import { Card } from "@/components/ui/Card";
 import { IconBadge } from "@/components/ui/IconBadge";
 import { Watermark } from "@/components/ui/Watermark";
 import { Reveal } from "@/components/motion/Reveal";
+import { SitePhoto } from "@/components/ui/SitePhoto";
+import { getImage } from "@/content/images";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { AboutShell } from "@/components/about/AboutShell";
@@ -49,6 +51,9 @@ export default function AboutPage() {
               </div>
             </Reveal>
             <Reveal delay={0.1} className="on-dark relative isolate flex min-h-[22rem] items-end overflow-hidden rounded-3xl bg-linear-to-br from-navy to-brand p-8 text-white sm:p-12">
+              {getImage("about-story") && (
+                <SitePhoto image={getImage("about-story")!} sizes="(min-width: 1024px) 50vw, 100vw" overlay />
+              )}
               <Watermark className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 !opacity-[0.09]" />
               <div className="relative">
                 <p className="font-heading text-7xl text-white sm:text-8xl">42</p>

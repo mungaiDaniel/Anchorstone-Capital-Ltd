@@ -9,6 +9,8 @@ import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { WaveRibbon } from "@/components/effects/WaveRibbon";
 import { FloatingDecor } from "@/components/effects/FloatingDecor";
 import { Reveal } from "@/components/motion/Reveal";
+import { SitePhoto } from "@/components/ui/SitePhoto";
+import type { SiteImage } from "@/content/images";
 import { SplitText } from "@/components/motion/SplitText";
 
 /**
@@ -24,6 +26,7 @@ export function PageHero({
   children,
   aside,
   fill = "var(--color-paper)",
+  image,
 }: {
   eyebrow: string;
   /** Plain text (split into words for the reveal). */
@@ -37,6 +40,8 @@ export function PageHero({
   aside?: ReactNode;
   /** Colour of the section after the diagonal edge. */
   fill?: string;
+  /** Slot photo shown behind the navy gradient. */
+  image?: SiteImage;
 }) {
   return (
     <>
@@ -45,6 +50,11 @@ export function PageHero({
           aria-hidden="true"
           className="absolute inset-0 -z-10 bg-[radial-gradient(120%_100%_at_30%_20%,var(--color-brand-800),var(--color-brand-950)_65%,var(--color-night))]"
         />
+        {image && (
+          <div className="absolute inset-0 -z-10">
+            <SitePhoto image={image} sizes="100vw" overlay />
+          </div>
+        )}
         <AuroraBackground className="-z-10 opacity-70" />
         <GridGlow className="-z-10" />
         <WaveRibbon className="-bottom-6 -z-10 h-28 sm:h-36" />

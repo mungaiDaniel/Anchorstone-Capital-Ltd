@@ -4,6 +4,7 @@ import { aboutTabs } from "@/content/site";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
 import { CTABand } from "@/components/ui/CTABand";
+import { getImage } from "@/content/images";
 
 /** Shared layout for the About section: hero + sub-navigation tabs + content + CTA band. */
 export function AboutShell({
@@ -25,6 +26,7 @@ export function AboutShell({
   return (
     <>
       <PageHero
+        image={current === "/about-us" ? undefined : getImage("about-values")}
         eyebrow={eyebrow}
         title={title}
         intro={intro}

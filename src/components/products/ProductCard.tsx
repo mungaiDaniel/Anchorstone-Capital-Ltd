@@ -3,15 +3,22 @@ import { ArrowRight } from "lucide-react";
 import type { Product } from "@/content/site";
 import { Icon } from "@/components/ui/Icon";
 import { Pill } from "@/components/ui/Pill";
+import { SitePhoto } from "@/components/ui/SitePhoto";
+import { getProductImage } from "@/content/images";
 
 /** Home-page product card: icon header panel, category tag, name, one line, amount pill, "Learn more →". */
 export function ProductCard({ product }: { product: Product }) {
+  const image = getProductImage(product.slug);
   return (
     <article className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-white shadow-soft transition-all duration-300 hover:-translate-y-1 hover:border-brand/40 hover:shadow-lift">
-      <div className="relative flex h-32 items-center justify-center bg-linear-to-br from-tint to-tint-2">
-        <span className="flex size-16 items-center justify-center rounded-full bg-white text-brand shadow-soft">
-          <Icon name={product.icon} className="size-8" />
-        </span>
+      <div className={`relative flex items-center justify-center bg-linear-to-br from-tint to-tint-2 ${image ? "aspect-[4/3]" : "h-32"}`}>
+        {image ? (
+          <SitePhoto image={image} sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
+        ) : (
+          <span className="flex size-16 items-center justify-center rounded-full bg-white text-brand shadow-soft">
+            <Icon name={product.icon} className="size-8" />
+          </span>
+        )}
         <Pill tone="outline" className="absolute top-3 left-3 bg-white/80">
           {product.categoryTag}
         </Pill>

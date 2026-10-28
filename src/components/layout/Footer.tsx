@@ -108,6 +108,9 @@ export function Footer() {
             <Link href="/terms" className="transition-colors hover:text-white">
               Terms &amp; Conditions
             </Link>
+            <Link href="/credits" className="transition-colors hover:text-white">
+              Photo credits
+            </Link>
           </p>
         </Container>
       </div>

@@ -44,3 +44,5 @@ next-env.d.ts
 /photo-candidates
 /public/photo-candidates
 .env.local
+
+/photo-imports

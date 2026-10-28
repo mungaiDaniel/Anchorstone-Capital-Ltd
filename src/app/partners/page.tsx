@@ -6,6 +6,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
 import { IconBadge } from "@/components/ui/IconBadge";
 import { PageHero } from "@/components/ui/PageHero";
+import { getImage } from "@/content/images";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PartnersStrip } from "@/components/sections/PartnersStrip";
@@ -22,7 +23,7 @@ export default function PartnersPage() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Partners", path: "/partners" }])} />
-      <PageHero eyebrow="Partners" title="Partnering for progress." breadcrumb={[{ label: "Partners" }]} />
+      <PageHero image={getImage("partners")} eyebrow="Partners" title="Partnering for progress." breadcrumb={[{ label: "Partners" }]} />
 
       <section aria-labelledby="who-title" className="bg-paper py-16 sm:py-20">
         <Container>

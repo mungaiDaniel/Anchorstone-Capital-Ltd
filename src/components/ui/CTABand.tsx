@@ -8,6 +8,8 @@ import { NoiseOverlay } from "@/components/effects/NoiseOverlay";
 import { Watermark } from "@/components/ui/Watermark";
 import { Reveal } from "@/components/motion/Reveal";
 import { ApplyButton } from "@/components/modal/ApplyButton";
+import { SitePhoto } from "@/components/ui/SitePhoto";
+import type { SiteImage } from "@/content/images";
 
 /** Closing navy call-to-action band. Primary action opens the loan modal. */
 export function CTABand({
@@ -15,16 +17,24 @@ export function CTABand({
   title = "Ready to move your plans forward?",
   description,
   secondary = { label: "Talk to us", href: "/contact-us" },
+  image,
 }: {
   eyebrow?: string;
   title?: ReactNode;
   description?: ReactNode;
   secondary?: { label: string; href: string } | null;
+  /** Slot photo shown behind the navy gradient. */
+  image?: SiteImage;
 }) {
   return (
     <section aria-labelledby="cta-title" className="bg-paper pb-20 sm:pb-28">
       <Container>
         <Reveal className="on-dark relative isolate overflow-hidden rounded-3xl bg-linear-to-br from-navy to-brand px-6 py-14 text-center shadow-lift sm:px-12 sm:py-20">
+          {image && (
+            <div className="absolute inset-0 -z-10">
+              <SitePhoto image={image} sizes="(min-width: 1280px) 1200px, 100vw" overlay />
+            </div>
+          )}
           <AuroraBackground className="-z-10 opacity-60" />
           <NoiseOverlay className="-z-10" />
           <Watermark className="-top-16 right-1/2 translate-x-1/2" />

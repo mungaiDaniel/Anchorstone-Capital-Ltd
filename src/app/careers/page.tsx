@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/Card";
 import { IconBadge } from "@/components/ui/IconBadge";
 import { ButtonLink } from "@/components/ui/Button";
 import { PageHero } from "@/components/ui/PageHero";
+import { getImage } from "@/content/images";
 import { Watermark } from "@/components/ui/Watermark";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
@@ -39,6 +40,7 @@ export default function CareersPage() {
     <>
       <JsonLd data={[breadcrumbJsonLd([{ name: "Careers", path: "/careers" }]), ...jobPostings]} />
       <PageHero
+        image={getImage("careers-hero")}
         eyebrow="Careers"
         title="Build a career that moves people forward."
         intro={careers.intro}

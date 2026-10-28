@@ -16,6 +16,7 @@ import { NumberedList } from "@/components/ui/NumberedList";
 import { Steps } from "@/components/ui/Steps";
 import { Accordion } from "@/components/ui/Accordion";
 import { PageHero } from "@/components/ui/PageHero";
+import { getProductImage } from "@/content/images";
 import { CTABand } from "@/components/ui/CTABand";
 import { Reveal } from "@/components/motion/Reveal";
 import { StaggerGroup, StaggerItem } from "@/components/motion/Stagger";
@@ -90,6 +91,7 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
 
       {/* 1. Hero */}
       <PageHero
+        image={getProductImage(product.slug)}
         eyebrow={product.categoryTag}
         title={product.name}
         intro={product.tagline}

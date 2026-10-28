@@ -754,3 +754,4 @@ export const heroCopy = {
     { label: "Grow your business", href: "/products/sme-loan", icon: "briefcase" as IconName },
   ],
 };
+export { images, getImage, type SiteImage } from "./images";

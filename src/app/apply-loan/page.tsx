@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
+import { getImage } from "@/content/images";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ApplyStepper } from "@/components/forms/ApplyStepper";
 
@@ -20,6 +21,7 @@ export default async function ApplyLoanPage({ searchParams }: PageProps<"/apply-
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Apply for a Loan", path: "/apply-loan" }])} />
       <PageHero
+        image={getImage("how-it-works")}
         eyebrow="Apply for a Loan"
         title="Tell us about your plans."
         intro="Give us a little more detail and our team will review your application quickly and keep you updated."

@@ -5,6 +5,7 @@ import { news, profilePdf, siteConfig } from "@/content/site";
 import { breadcrumbJsonLd, pageMetadata } from "@/lib/seo";
 import { Container } from "@/components/ui/Container";
 import { PageHero } from "@/components/ui/PageHero";
+import { getImage } from "@/content/images";
 import { JsonLd } from "@/components/seo/JsonLd";
 
 export const metadata: Metadata = pageMetadata({
@@ -20,7 +21,7 @@ export default function MediaPage() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd([{ name: "Media Centre", path: "/media" }])} />
-      <PageHero eyebrow="Newsroom" title="Media Centre" breadcrumb={[{ label: "Media Centre" }]} />
+      <PageHero image={getImage("media")} eyebrow="Newsroom" title="Media Centre" breadcrumb={[{ label: "Media Centre" }]} />
 
       <section aria-labelledby="news-title" className="bg-paper py-12 sm:py-16">
         <Container>
