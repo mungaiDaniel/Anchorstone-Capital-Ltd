@@ -75,7 +75,7 @@ export default function HomePage() {
             ))}
           </StaggerGroup>
           <p className="mt-8 flex justify-center">
-            <Pill>42 years combined director experience</Pill>
+            <Pill>80+ years combined experience</Pill>
           </p>
         </Container>
       </section>

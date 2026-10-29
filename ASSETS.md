@@ -21,7 +21,6 @@ them at quality 85; browsers never download the masters directly.
 | `about-hero-nairobi-skyline.webp` | About Us — page hero | Nairobi city skyline at golden hour | https://unsplash.com/photos/city-skyline-under-white-sky-during-daytime-LTh5pGyvKAM | Amani Nation (Nairobi, Kenya) | Unsplash License |
 | `about-team-professionals-laptop.webp` | About Us — company story | Three young professionals discussing work around a laptop | https://unsplash.com/photos/eW9pQYULLb8 | Ninthgrid (Lagos, Nigeria) | Unsplash License |
 | `team-hero-meeting.webp` | Our Team — page hero | Professionals discussing ideas around a meeting-room table | https://unsplash.com/photos/a-group-of-people-sitting-around-a-table-with-laptops-uZyE3w7khzw | UK Black Tech | Unsplash License |
-| `contact-hero-westlands-nairobi.webp` | Contact Us — page hero | Office towers in Westlands, Nairobi, under a bright cloudy sky | https://unsplash.com/photos/a-bridge-with-a-city-in-the-background-ESmWYVFII9I | Wambui (Westlands, Nairobi, Kenya) | Unsplash License |
 
 ## Team headshots (client-supplied)
 
@@ -32,7 +31,7 @@ Resolution is only ~740 px — ask the client for the original, higher-resolutio
 | ---- | ------- | -------- | ------ | ------- |
 | `team/selestine-mwanga.webp` | Our Team; profile page | Portrait of Selestine K. Mwanga | Client-supplied | Client's own photo |
 | `team/oltele-lemek.webp` | Our Team; profile page | Portrait of Oltele Lemek | Client-supplied | Client's own photo |
-| `team/oltele-gilbert.webp` | Our Team; profile page | Portrait of Oltele Gilbert | Client-supplied | Client's own photo |
+| `brand/team/gilbert-lekilabu.jpg` | Our Team | Portrait of Gilbert Lekilabu | Client-supplied | Client's own photo |
 
 ## Generated (no external assets)
 

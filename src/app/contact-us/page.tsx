@@ -9,8 +9,8 @@ import { MapEmbed } from "@/components/sections/MapEmbed";
 import { ContactForm } from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact Us — Anchorstone Capital, Westlands, Nairobi",
-  description: `Get in touch with ${siteConfig.shortName}. Visit us in Westlands, Nairobi, call ${siteConfig.contact.phone.display} or send a message.`,
+  title: "Contact Us — Anchorstone Capital, Koinange Street, Nairobi",
+  description: `Get in touch with ${siteConfig.shortName}. Visit us at Emperor Plaza, Koinange Street, Nairobi, call ${siteConfig.contact.phone.display} or send a message.`,
   path: "/contact-us",
 });
 

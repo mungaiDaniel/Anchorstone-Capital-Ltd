@@ -52,7 +52,7 @@ const SLOTS = [
   { id: "careers-culture-3", fmt: "tall", used: "Careers culture 3 (helping a customer)", q: ["call centre Africa headset", "African customer service phone"] },
   { id: "partners", fmt: "hero", used: "Partners", q: ["African business partners meeting"] },
   { id: "media", fmt: "hero", used: "Media Centre", q: ["Nairobi city street", "business news laptop"] },
-  { id: "contact", fmt: "hero", used: "Contact", q: ["Nairobi Westlands", "modern office reception Africa"] },
+  { id: "contact", fmt: "hero", used: "Contact", q: ["Nairobi CBD", "modern office reception Africa"] },
   { id: "cta-band", fmt: "hero", used: "Closing CTA band", q: ["Nairobi expressway dusk", "African city dusk"] },
 ];
 

@@ -1,6 +1,6 @@
 # Anchorstone Capital Ltd — website
 
-Marketing site for Anchorstone Capital Ltd (formerly branded "Luminous Crown"), rebuilt page by page from the original WordPress site.
+Marketing site for Anchorstone Capital Ltd, rebuilt page by page from the original WordPress site.
 
 ## Stack
 

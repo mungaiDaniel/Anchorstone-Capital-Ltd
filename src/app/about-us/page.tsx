@@ -56,8 +56,8 @@ export default function AboutPage() {
               )}
               <Watermark className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 !opacity-[0.09]" />
               <div className="relative">
-                <p className="font-heading text-7xl text-white sm:text-8xl">42</p>
-                <p className="eyebrow mt-2 text-on-navy">yrs combined director experience</p>
+                <p className="font-heading text-7xl text-white sm:text-8xl">80+</p>
+                <p className="eyebrow mt-2 text-on-navy">yrs combined leadership experience</p>
               </div>
             </Reveal>
           </Container>

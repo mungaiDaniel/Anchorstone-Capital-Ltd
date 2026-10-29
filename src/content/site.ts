@@ -41,23 +41,26 @@ export const siteConfig = {
   topBarLicence: "Licensed credit provider · Regulated by the Central Bank of Kenya",
   // TODO(client): CBK licence number — not rendered until filled.
   licenceNumber: undefined as string | undefined,
-  // TODO(deploy): becomes https://anchorstone.com when the domain is live.
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://anchorstone-capital-ltd.vercel.app",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://anchorstonecapitalltd.com",
   locale: "en_KE",
   contact: {
     phone: { display: "+254 742 975 497", href: "tel:+254742975497", e164: "+254742975497" },
-    // TODO(client): TEMPORARY — becomes info@anchorstone.com once the domain is live.
-    email: { display: "info@luminouscrown.co.ke", href: "mailto:info@luminouscrown.co.ke", address: "info@luminouscrown.co.ke" },
+    email: { display: "info@anchorstonecapitalltd.com", href: "mailto:info@anchorstonecapitalltd.com", address: "info@anchorstonecapitalltd.com" },
     // TODO(client): careers mailbox — falls back to the main email.
     careersEmail: undefined as string | undefined,
     // TODO(client): WhatsApp number, international format without "+", e.g. 2547XXXXXXXX. No number = no WhatsApp button.
     whatsapp: undefined as string | undefined,
     address: {
-      street: "Kofisi, Westlands",
-      locality: "Nairobi",
+      line1: "Emperor Plaza, Room 520",
+      line2: "Koinange Street",
+      city: "Nairobi",
       country: "Kenya",
-      display: "Kofisi, Westlands, Nairobi, Kenya",
-      mapQuery: "Kofisi, Westlands, Nairobi",
+      /** Full street address for JSON-LD streetAddress. */
+      street: "Emperor Plaza, Room 520, Koinange Street",
+      locality: "Nairobi",
+      /** Single-line version for the footer and top bar. */
+      display: "Emperor Plaza, Room 520, Koinange Street, Nairobi",
+      mapQuery: "Emperor Plaza, Koinange Street, Nairobi",
     },
     // TODO(client): office hours — not rendered until filled.
     officeHours: undefined as string | undefined,
@@ -139,7 +142,7 @@ const lendingExpect = [
 ];
 
 const lendingSteps: ProcessStep[] = [
-  { title: "Apply", text: "Tell us what you need online, by phone or at our Westlands office." },
+  { title: "Apply", text: "Tell us what you need online, by phone or or visit our office at Emperor Plaza, Koinange Street." },
   { title: "Review", text: "An officer reviews your documents and confirms what you can comfortably repay." },
   { title: "Approve", text: "You receive a decision — qualifying applicants can be approved the same day." },
   { title: "Disburse", text: "Once you accept the terms, funds are paid out directly to you." },
@@ -395,10 +398,10 @@ export const about = {
     "Access to fair credit changes what people can do: keep a business running, send a child to study abroad, or turn a vehicle into working capital. We exist to make that access simple, fast and honest.",
 };
 
-export const directorYears = 42;
+export const directorYears = 80;
 
 export const stats = [
-  { value: 42, suffix: " yrs", label: "Combined director experience" },
+  { value: 80, suffix: "+ yrs", label: "Combined leadership experience" },
   { value: 5, suffix: "", label: "Credit & protection products" },
   { value: 700, prefix: "KES ", suffix: "K", label: "Maximum logbook loan" },
   { value: 24, suffix: " hrs", prefix: "≤ ", label: "To disbursement for SME loans" },
@@ -422,7 +425,7 @@ export const whyUs: { icon: IconName; title: string; text: string }[] = [
   { icon: "eye", title: "Transparent terms", text: "Simple, upfront pricing with no hidden charges." },
   { icon: "heart", title: "Ethical lending", text: "Affordability checks on every application — we never over-lend." },
   { icon: "users", title: "Personal support", text: "A dedicated team that knows your file and answers your call." },
-  { icon: "award", title: "Experienced leadership", text: "42 years of combined director experience in credit, risk and law." },
+  { icon: "award", title: "Experienced leadership", text: "Over 80 years of combined experience in banking, credit, risk and law." },
   { icon: "landmark", title: "Licensed & regulated", text: "A licensed credit provider operating under Central Bank of Kenya rules." },
 ];
 
@@ -436,7 +439,7 @@ export const featureHighlights: { icon: IconName; title: string; text: string }[
 
 export const howItWorks: ProcessStep[] = [
   { title: "Choose a product", text: "Pick the loan or cover that fits your goal." },
-  { title: "Apply", text: "Request a call back, call us or visit our Westlands office." },
+  { title: "Apply", text: "Request a call back, call us or visit our office at Emperor Plaza, Koinange Street." },
   { title: "Get assessed", text: "We review your documents and what you can comfortably repay." },
   { title: "Receive funds", text: "Once approved and accepted, funds are disbursed — often the same day." },
 ];
@@ -466,7 +469,7 @@ export const ceo: TeamMember = {
   role: "CEO & Managing Director",
   photo: { src: "/brand/team/selestine-mwanga.jpg", alt: "Portrait of Selestine K. Mwanga", position: "center 20%" },
   summary:
-    "A seasoned financial and business professional with over 13 years of experience in banking, lending and strategic corporate leadership. Selestine brings deep expertise in credit risk assessment, financial modelling, portfolio growth, lending structures and regulatory compliance — with a track record of guiding organisations to sustainable profitability while balancing growth with ethical stewardship.",
+    "Over 13 years in banking, lending and corporate leadership. Selestine brings deep expertise in credit risk assessment, financial modelling, portfolio growth and regulatory compliance — guiding organisations to sustainable profitability with ethical stewardship.",
   highlights: [
     {
       title: "CEO & Managing Director",
@@ -508,28 +511,17 @@ export const members: TeamMember[] = [
     role: "Director",
     photo: { src: "/brand/team/oltele-lemek.jpg", alt: "Portrait of Oltele Lemek", position: "center 15%" },
     summary:
-      "A seasoned financial professional with over 17 years of experience in senior financial management, investment management and strategic advisory. Oltele brings proven expertise in banking, wealth management and relationship management, with deep knowledge of performance-based financing, budget monitoring, financial reporting and investment oversight.",
-    tags: [
-      "Senior management, KCB Bank",
-      "Senior Financial Advisor, SIB",
-      "Head of Investment & Wealth Advisory, Moran Capital Management",
-      "Licensed investment & wealth advisor (ICIFA)",
-    ],
+      "Over 17 years in senior financial management, investment and wealth advisory. Oltele has held senior roles at KCB Bank and SIB, and led Investment & Wealth Advisory at Moran Capital Management.",
+    tags: ["17+ years experience", "Investment & wealth advisory", "ICIFA licensed advisor"],
   },
   {
-    slug: "oltele-lekilabu",
-    // TODO(client): confirm name spelling.
-    name: "Oltele G. Lekilabu",
-    role: "Mortgage & Real Estate Advisory",
-    photo: { src: "/brand/team/oltele-lekilabu.jpg", alt: "Portrait of Oltele G. Lekilabu", position: "center 20%" },
+    slug: "gilbert-lekilabu",
+    name: "Gilbert Lekilabu",
+    role: "Relationship Banking & Business Management",
+    photo: { src: "/brand/team/gilbert-lekilabu.jpg", alt: "Portrait of Gilbert Lekilabu", position: "center 20%" },
     summary:
-      "An experienced mortgage and real estate advisory expert with over 10 years in the real estate and financial sectors. He is proficient in mortgage origination, underwriting and refinancing, with a keen understanding of market trends, regulation and risk across residential and commercial property — helping clients make informed decisions built on trust and transparency.",
-    tags: [
-      "Mortgage origination & underwriting",
-      "Refinancing",
-      "Residential & commercial property",
-      "Risk & market analysis",
-    ],
+      "A relationship banking and business management professional with over 10 years in the financial sector. Gilbert builds lasting client relationships, structures practical financing solutions and drives business growth.",
+    tags: ["Relationship banking", "Business management", "Client portfolio growth"],
   },
 ];
 
@@ -624,7 +616,7 @@ export const faqs: (Faq & { category: FaqCategory })[] = [
   {
     category: "Applying",
     q: "How do I apply?",
-    a: "Use the Apply for a Loan form, call us or visit our Westlands office. An officer will contact you to guide you.",
+    a: "Use the Apply for a Loan form, call us or visit our office at Emperor Plaza, Koinange Street. An officer will contact you to guide you.",
   },
   {
     category: "Applying",
@@ -746,7 +738,7 @@ export const heroCopy = {
     "Transparent terms",
     "Ethical lending",
     "Personal support",
-    "42 years of combined director experience",
+    "80+ years combined experience",
   ],
   quickLinks: [
     { label: "Unlock your logbook", href: "/products/logbook-loan", icon: "car" as IconName },
