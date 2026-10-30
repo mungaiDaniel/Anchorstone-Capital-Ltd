@@ -66,30 +66,7 @@ export default function CeoPage() {
         </section>
 
         <section aria-label="Career and education" className="bg-paper pb-16 sm:pb-24">
-          <Container className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:gap-16">
-            {ceo.highlights && (
-              <Reveal>
-                <h2 className="text-3xl">Career highlights</h2>
-                <ol className="relative mt-8 space-y-8 border-l border-line pl-8">
-                  {ceo.highlights.map((h) => (
-                    <li key={`${h.org}-${h.title}`} className="relative">
-                      <span
-                        aria-hidden="true"
-                        className={`absolute top-1.5 -left-[2.4rem] size-3 rounded-full border-2 ${
-                          h.current ? "border-brand bg-brand" : "border-brand/40 bg-white"
-                        }`}
-                      />
-                      <p className="flex flex-wrap items-center gap-2">
-                        <span className="font-semibold text-ink">{h.title}</span>
-                        {h.current && <span className="rounded-full bg-brand px-2.5 py-0.5 text-xs font-semibold text-white">Current</span>}
-                      </p>
-                      <p className="text-sm font-semibold text-brand">{h.org}</p>
-                      <p className="mt-1 text-body">{h.detail}</p>
-                    </li>
-                  ))}
-                </ol>
-              </Reveal>
-            )}
+          <Container className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <div className="space-y-10">
               {ceo.education && (
                 <Reveal>
