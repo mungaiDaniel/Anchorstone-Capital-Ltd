@@ -466,13 +466,13 @@ export interface TeamMember {
 export const ceo: TeamMember = {
   slug: "selestine-mwanga",
   name: "Selestine K. Mwanga",
-  role: "CEO & Managing Director",
+  role: "CEO / Chairman",
   photo: { src: "/brand/team/selestine-mwanga.jpg", alt: "Portrait of Selestine K. Mwanga", position: "center 20%" },
   summary:
     "Over 13 years in banking, lending and corporate leadership. Selestine brings deep expertise in credit risk assessment, financial modelling, portfolio growth and regulatory compliance — guiding organisations to sustainable profitability with ethical stewardship.",
   highlights: [
     {
-      title: "CEO & Managing Director",
+      title: "CEO / Chairman",
       org: "Anchorstone Capital Ltd",
       detail: "Leading a lending company focused on transparent, ethical and scalable financial solutions.",
       current: true,
