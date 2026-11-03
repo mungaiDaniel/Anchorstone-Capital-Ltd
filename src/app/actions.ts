@@ -3,6 +3,7 @@
 import { contactTopics, getProduct, siteConfig } from "@/content/site";
 import {
   applySchema,
+  bookingSchema,
   careersSchema,
   contactSchema,
   parseForm,
@@ -12,6 +13,7 @@ import {
   validateCv,
   type FormState,
 } from "@/lib/forms/schemas";
+import { formatBookingDate } from "@/lib/forms/booking";
 import { clientIp, rateLimited, sendToInbox } from "@/lib/forms/server";
 
 const BUSY: FormState = {
@@ -56,6 +58,27 @@ export async function submitContact(_prev: FormState, formData: FormData): Promi
     text: ["New website enquiry", "", `Name:   ${d.name}`, `Phone:  ${d.phone}`, `Email:  ${d.email}`, `Topic:  ${topic}`, "", "Message:", d.message].join("\n"),
   });
   return sent.ok ? { status: "success" } : { ...UNAVAILABLE("message"), values: rawValues(formData) };
+}
+
+/* ───────────── Appointment booking ───────────── */
+
+export async function submitBooking(_prev: FormState, formData: FormData): Promise<FormState> {
+  const ref = reference("AP");
+  if (isBot(formData)) return { status: "success", reference: ref };
+  if (rateLimited(`booking:${await clientIp()}`)) return BUSY;
+
+  const parsed = parseForm(bookingSchema, formData);
+  if (!parsed.ok) return { status: "error", errors: parsed.errors, values: parsed.values, message: INVALID };
+
+  const d = parsed.data;
+  const topic = contactTopics.find((t) => t.value === d.topic)?.label ?? d.topic;
+  const when = `${formatBookingDate(d.date)} at ${d.time} (EAT)`;
+  const sent = await sendToInbox({
+    subject: `Appointment request ${ref} — ${when} — ${d.name}`,
+    replyTo: d.email,
+    text: ["New appointment request  (" + ref + ")", "", `When:   ${when}`, `Name:   ${d.name}`, `Phone:  ${d.phone}`, `Email:  ${d.email}`, `Topic:  ${topic}`, "", "Please confirm this slot with the client."].join("\n"),
+  });
+  return sent.ok ? { status: "success", reference: ref } : { ...UNAVAILABLE("appointment request"), values: rawValues(formData) };
 }
 
 /* ───────────── Quick apply (modal + home card) ───────────── */

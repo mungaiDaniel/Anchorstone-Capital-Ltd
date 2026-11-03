@@ -7,6 +7,8 @@ import { PageHero } from "@/components/ui/PageHero";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { MapEmbed } from "@/components/sections/MapEmbed";
 import { ContactForm } from "@/components/forms/ContactForm";
+import { BookingForm } from "@/components/forms/BookingForm";
+import { bookableDates, formatBookingDate } from "@/lib/forms/booking";
 
 export const metadata: Metadata = pageMetadata({
   title: "Contact Us — Anchorstone Capital, Koinange Street, Nairobi",
@@ -20,6 +22,11 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact-
   const sp = await searchParams;
   const { contact } = siteConfig;
   const wa = whatsappUrl();
+  const dates = bookableDates().map((value) => {
+    const d = new Date(`${value}T00:00:00Z`);
+    const fmt = (o: Intl.DateTimeFormatOptions) => d.toLocaleDateString("en-GB", { ...o, timeZone: "UTC" });
+    return { value, weekday: fmt({ weekday: "short" }), day: fmt({ day: "numeric" }), month: fmt({ month: "short" }), label: formatBookingDate(value) };
+  });
 
   const details = [
     { icon: MapPin, label: "Visit us", content: <p>{contact.address.display}</p> },
@@ -80,6 +87,11 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact-
             </ul>
           </div>
           <ContactForm initialTopic={first(sp.topic)} />
+        </Container>
+      </section>
+      <section id="book" aria-label="Book an appointment" className="scroll-mt-24 bg-paper pb-16 sm:pb-20">
+        <Container className="mx-auto max-w-3xl">
+          <BookingForm dates={dates} />
         </Container>
       </section>
       <section aria-label="Map" className="bg-paper pb-20 sm:pb-28">

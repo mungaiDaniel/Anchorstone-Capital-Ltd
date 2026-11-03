@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { BOOKING_TIMES, bookableDates } from "./booking";
 import { contactTimes, contactTopics, getProduct, lendingProducts, products, TALENT_POOL, partnerPitch, careers } from "@/content/site";
 
 /** Shared between the browser (instant feedback) and the server actions (the real check). */
@@ -37,6 +38,21 @@ export const contactSchema = z.object({
   message: z.string().trim().min(10, "Please tell us a little more (at least 10 characters).").max(5000, "Please keep your message under 5,000 characters."),
   consent: checked("Please agree so we can contact you about your enquiry."),
 });
+
+/* ── Appointment booking (Contact Us) ── */
+export const bookingSchema = z
+  .object({
+    name: fullName,
+    phone,
+    email,
+    topic: z.enum(contactTopics.map((t) => t.value) as [string, ...string[]], "Choose a topic."),
+    date: z.string("Choose a date.").min(1, "Choose a date.").regex(/^\d{4}-\d{2}-\d{2}$/, "Choose a date."),
+    time: z.enum(BOOKING_TIMES, "Choose a time."),
+    consent: checked("Please agree so we can contact you about your appointment."),
+  })
+  .superRefine((v, ctx) => {
+    if (!bookableDates().includes(v.date)) ctx.addIssue({ code: "custom", path: ["date"], message: "Choose one of the available dates." });
+  });
 
 export const INCOME_RANGES = ["Below KES 30,000", "KES 30,000 – 60,000", "KES 60,000 – 100,000", "KES 100,000 – 200,000", "Above KES 200,000"] as const;
 export const EMPLOYMENT_TYPES = ["Salaried employee", "Self-employed / business owner", "Student or sponsored", "Other"] as const;
