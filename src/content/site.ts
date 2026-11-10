@@ -523,6 +523,33 @@ export const members: TeamMember[] = [
       "A relationship banking and business management professional with over 10 years in the financial sector. Gilbert builds lasting client relationships, structures practical financing solutions and drives business growth.",
     tags: ["Relationship banking", "Business management", "Client portfolio growth"],
   },
+  {
+    slug: "rose",
+    name: "Rose",
+    role: "Head of Sales",
+    photo: { src: "/brand/team/rose.jpg", alt: "Portrait of Rose, Head of Sales", position: "center 20%" },
+    summary:
+      "A Head of Sales with over 13 years of progressive experience in microfinance and financial services, driving business growth, portfolio expansion, customer acquisition and revenue generation. Rose leads high-performing sales teams and builds strong client relationships across retail, SME and group lending markets.",
+    tags: ["13+ years experience", "Sales leadership", "Portfolio growth", "SME & group lending"],
+  },
+  {
+    slug: "gladys",
+    name: "Gladys",
+    role: "Head of Administration",
+    photo: { src: "/brand/team/gladys.jpg", alt: "Portrait of Gladys, Head of Administration", position: "center 20%" },
+    summary:
+      "A dedicated and highly organised Head of Administration with over 5 years of experience leading administrative operations, office management and policy implementation. Gladys streamlines processes, manages resources efficiently and ensures compliance with organisational policies and regulatory requirements.",
+    tags: ["5+ years experience", "Operations & compliance", "Procurement & budgets"],
+  },
+  {
+    slug: "stephen-ndungu",
+    name: "Stephen Ndungu",
+    role: "Liabilities Manager",
+    photo: { src: "/brand/team/stephen-ndungu.jpg", alt: "Portrait of Stephen Ndungu", position: "center 20%" },
+    summary:
+      "An experienced Liabilities Manager with over 15 years across the financial services sector. Stephen has a proven track record in custodian and investor services, pension administration, fund management, investment banking, Real Estate Investment Trusts (REITs), accounting, auditing, tax, risk and compliance.",
+    tags: ["15+ years experience", "Custody & pensions", "Fund management", "REITs, risk & compliance"],
+  },
 ];
 
 export const team: TeamMember[] = [ceo, ...members];

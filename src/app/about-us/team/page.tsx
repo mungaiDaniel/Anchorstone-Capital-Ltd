@@ -10,7 +10,7 @@ import { AboutShell } from "@/components/about/AboutShell";
 
 export const metadata: Metadata = pageMetadata({
   title: "Meet the Team",
-  description: `The directors and advisers behind ${siteConfig.shortName}: decades of experience in credit, investment, wealth and real estate advisory.`,
+  description: `The leadership team behind ${siteConfig.shortName}: decades of experience in banking, credit, sales, investment and wealth advisory.`,
   path: "/about-us/team",
 });
 
