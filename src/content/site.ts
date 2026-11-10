@@ -524,19 +524,19 @@ export const members: TeamMember[] = [
     tags: ["Relationship banking", "Business management", "Client portfolio growth"],
   },
   {
-    slug: "rose",
-    name: "Rose",
+    slug: "rose-wanjiku",
+    name: "Rose W. Wanjiku",
     role: "Head of Sales",
-    photo: { src: "/brand/team/rose.jpg", alt: "Portrait of Rose, Head of Sales", position: "center 20%" },
+    photo: { src: "/brand/team/rose.jpg", alt: "Portrait of Rose W. Wanjiku, Head of Sales", position: "center 20%" },
     summary:
       "A Head of Sales with over 13 years of progressive experience in microfinance and financial services, driving business growth, portfolio expansion, customer acquisition and revenue generation. Rose leads high-performing sales teams and builds strong client relationships across retail, SME and group lending markets.",
     tags: ["13+ years experience", "Sales leadership", "Portfolio growth", "SME & group lending"],
   },
   {
-    slug: "gladys",
-    name: "Gladys",
+    slug: "gladys-wairimu",
+    name: "Gladys W. Wairimu",
     role: "Head of Administration",
-    photo: { src: "/brand/team/gladys.jpg", alt: "Portrait of Gladys, Head of Administration", position: "center 20%" },
+    photo: { src: "/brand/team/gladys.jpg", alt: "Portrait of Gladys W. Wairimu, Head of Administration", position: "center 20%" },
     summary:
       "A dedicated and highly organised Head of Administration with over 5 years of experience leading administrative operations, office management and policy implementation. Gladys streamlines processes, manages resources efficiently and ensures compliance with organisational policies and regulatory requirements.",
     tags: ["5+ years experience", "Operations & compliance", "Procurement & budgets"],
