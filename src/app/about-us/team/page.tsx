@@ -32,7 +32,7 @@ export default function TeamPage() {
       >
         <section aria-label="Team members" className="bg-paper py-16 sm:py-20">
           <Container>
-            <StaggerGroup as="ul" className="grid gap-8 md:grid-cols-2">
+            <StaggerGroup as="ul" className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               {team.map((m, i) => (
                 <StaggerItem as="li" key={m.slug}>
                   <article className="flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-white shadow-soft">
@@ -42,14 +42,14 @@ export default function TeamPage() {
                         alt={m.photo.alt}
                         fill
                         priority={i < 2}
-                        sizes="(min-width: 768px) 45vw, 100vw"
+                        sizes="(min-width: 1024px) 30vw, (min-width: 768px) 45vw, 100vw"
                         className="object-cover"
                         style={{ objectPosition: m.photo.position }}
                       />
                     </div>
                     <div className="flex flex-1 flex-col p-6 sm:p-8">
                       <p className="eyebrow text-brand">{m.role}</p>
-                      <h3 className="mt-2 text-3xl">{m.name}</h3>
+                      <h3 className="mt-2 text-2xl">{m.name}</h3>
                       <p className="mt-4 text-body">{m.summary}</p>
                       {m.tags && (
                         <ul className="mt-6 flex flex-wrap gap-2">
