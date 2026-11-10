@@ -24,11 +24,11 @@ export const cssEase = (curve: readonly number[]) => `cubic-bezier(${curve.join(
 
 /** Durations in seconds. */
 export const duration = {
-  fast: 0.3,
-  base: 0.7,
-  slow: 1.1,
+  fast: 0.2,
+  base: 0.45,
+  slow: 0.65,
   /** Page transition wipe. */
-  page: 0.6,
+  page: 0.35,
 };
 
 /** Spring presets for Motion's `transition={{ type: "spring", ...spring.x }}`. */
@@ -44,17 +44,17 @@ export const spring = {
 /** Stagger steps in seconds. */
 export const stagger = {
   /** Between cards / list items. */
-  items: 0.09,
+  items: 0.05,
   /** Between words in <SplitText>. */
-  words: 0.06,
+  words: 0.03,
   /** Between lines in <SplitText mode="lines">. */
-  lines: 0.14,
+  lines: 0.08,
 };
 
 /** Distances in px, scaled by intensity. */
 export const distance = {
-  reveal: 28 * k,
-  revealSide: 40 * k,
+  reveal: 20 * k,
+  revealSide: 28 * k,
   /** Max px a <Parallax> layer travels per unit of `speed`. */
   parallax: 120 * k,
   /** Max px a <Magnetic> element follows the cursor. */
@@ -66,7 +66,7 @@ export const effect = {
   /** <TiltCard> max rotation (degrees). */
   tiltDeg: 7 * k,
   /** Blur (px) at the start of blur-in reveals and SplitText. */
-  blurPx: 10,
+  blurPx: 6,
   /** Scale at the start of `scale` reveals. */
   revealScale: 1 - 0.06 * k,
   /** Marquee: seconds per loop (higher = slower). */
@@ -75,9 +75,9 @@ export const effect = {
   auroraSeconds: 26 / Math.max(k, 0.2),
 };
 
-/** Viewport trigger: reveal when the element is 12% inside the viewport (from the bottom). */
+/** Viewport trigger: reveal when the element is 4% inside the viewport (from the bottom). */
 export const viewport = {
-  rootMargin: "0px 0px -12% 0px",
+  rootMargin: "0px 0px -4% 0px",
   threshold: 0,
 };
 

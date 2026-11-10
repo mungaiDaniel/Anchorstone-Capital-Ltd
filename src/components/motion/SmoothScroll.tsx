@@ -11,7 +11,7 @@ import { MOTION_INTENSITY } from "@/lib/motion";
 export function SmoothScroll() {
   useEffect(() => {
     if (MOTION_INTENSITY === 0 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const lenis = new Lenis({ lerp: 0.1, anchors: true, autoRaf: true });
+    const lenis = new Lenis({ lerp: 0.16, anchors: true, autoRaf: true });
     return () => lenis.destroy();
   }, []);
   return null;

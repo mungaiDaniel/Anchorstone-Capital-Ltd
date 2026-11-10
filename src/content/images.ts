@@ -8,34 +8,34 @@ export interface SiteImage {
   credit: { name: string; url: string; source: string; pageUrl: string; licence: string };
 }
 
-/** Stock photography (Nappy). People shown are models, never Anchorstone staff, clients or success stories. */
+/** Stock photography (Nappy and Unsplash). People shown are models, never Anchorstone staff, clients or success stories. */
 export const images: Record<string, SiteImage> = {
   "home-hero": {
     slot: "home-hero",
     src: "/images/home-hero.webp",
-    alt: "Woman in a cream sweater using a phone at a desk in a bright office",
+    alt: "Nairobi city skyline seen across the rooftops on a clear day",
     width: 2400,
     height: 1350,
-    blurDataURL: "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADwAQCdASoQAAkAA4BaJbACdADv9Lo1gaAAog+D1mO9xy3+nGTiX8WZ6vMF/YlYAnUF2SKGVaVbZORhD3NUvstQyzdngn3KAxqGiHy/YLymghLlFzY6PFgapAA=",
-    credit: { name: "Aspen", url: "https://nappy.co/user/Aspen", source: "Nappy", pageUrl: "https://nappy.co/photo/focused-female-professional-at-the-office+yJocZYawPj0UjsLWedjAF", licence: "Nappy License (free commercial use)" },
+    blurDataURL: "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADQAQCdASoQAAkAA4BaJQBOgB8vg+RpIAD+WHK4KdVdkvi27jvWjgtKDR1fD0IAtumIhN4j/I1ZJrVlGS6lCC6TQsoAUQAA",
+    credit: { name: "imsogabriel stock", url: "https://unsplash.com/@imsogabriel", source: "Unsplash", pageUrl: "https://unsplash.com/photos/a-cityscape-of-nairobi-kenya-on-a-sunny-day-IaJm3mq0F5o", licence: "Unsplash License (free commercial use)" },
   },
   "logbook": {
     slot: "logbook",
     src: "/images/logbook.webp",
-    alt: "Man driving a car, seen through the open driver’s window",
+    alt: "Man stepping out of his car on a city street",
     width: 1200,
     height: 900,
-    blurDataURL: "data:image/webp;base64,UklGRoYAAABXRUJQVlA4IHoAAABQAgCdASoQAAwAA4BaJagCdAYv1gd+7nS+TAAA/tot3Jqze6Jdn12eb1K+3DGecB97MKsvPsfdwPS16vJ4vHvqwWNyi8OWlc8XUPvKERp+XHp56uGUFtU6qO8mrR68eihs9ffgSfDuMkr7V1bcKePIRBoVixIXOAAAAA==",
-    credit: { name: "Nappy contributor (7a93e9f2)", url: "https://nappy.co/user/7a93e9f2", source: "Nappy", pageUrl: "https://nappy.co/photo/man-driving-car+iDfw030Q5-IRDLBT0FxWl", licence: "Nappy License (free commercial use)" },
+    blurDataURL: "data:image/webp;base64,UklGRmwAAABXRUJQVlA4IGAAAADwAQCdASoQAAwAA4BaJYwAD5GsWR/lEAAAzj3Q9zeFggPBQmIh8FGicIh9uMa8SCcpeC2ZsrQa05CY2hGr0qS+b7L4UuDTjE3H7dKFLjR88j86I4K223UPVt5P8/T+gAA=",
+    credit: { name: "Fortune Vieyra", url: "https://unsplash.com/@fortunevieyra", source: "Unsplash", pageUrl: "https://unsplash.com/photos/man-in-blue-suit-standing-beside-black-car-jZ9s1loMFiE", licence: "Unsplash License (free commercial use)" },
   },
   "personal-secured": {
     slot: "personal-secured",
     src: "/images/personal-secured.webp",
-    alt: "Woman working on a laptop on a sofa at home",
+    alt: "Woman on a phone call at her desk in a bright home office",
     width: 1200,
     height: 900,
-    blurDataURL: "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAADQAQCdASoQAAwAA4BaJZwAAt+3tD8yAAD+8dGtc4p3IIE7tY3h3bSe2vCx7XHeNUcLuy7qsLkphv/EX/x2mHzMUm5QKLprDALXD39ofXrys3wKn2HFKcsIAAA=",
-    credit: { name: "Aspen", url: "https://nappy.co/user/Aspen", source: "Nappy", pageUrl: "https://nappy.co/photo/woman-working-from-home-with-laptop+6XoZMrOQU-IWrrvEoluoR", licence: "Nappy License (free commercial use)" },
+    blurDataURL: "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAACwAQCdASoQAAwAA4BaJZQC7AB7vDAAAP7Qyi4CnjcpnDamDDxmRiu0xUcWnTQKr0yWO+NM81ysUc+aNTBrKn0l9/Jzie+P0IU6zygbAEQAAA==",
+    credit: { name: "Vitaly Gariev", url: "https://unsplash.com/@silverkblack", source: "Unsplash", pageUrl: "https://unsplash.com/photos/young-woman-talking-on-phone-at-desk-with-laptop-n1yI8oExVns", licence: "Unsplash License (free commercial use)" },
   },
   "study-abroad": {
     slot: "study-abroad",
@@ -49,11 +49,11 @@ export const images: Record<string, SiteImage> = {
   "sme": {
     slot: "sme",
     src: "/images/sme.webp",
-    alt: "Shop owner sitting in his stall surrounded by beads and crafts",
+    alt: "Tailor working at a sewing machine in his workshop",
     width: 1200,
     height: 900,
-    blurDataURL: "data:image/webp;base64,UklGRmgAAABXRUJQVlA4IFwAAADQAQCdASoQAAwAA4BaJYwAAlxdZr6ygADif9zgHbur9+urrSMi8IBlpzMjYfTNtOqyIkScOpA6AK5UBI3metpxd84HZPNgnds9x8vPNHMYic/Xf7S4Pf4TeAwAAA==",
-    credit: { name: "exploringphotography", url: "https://nappy.co/user/exploringphotography", source: "Nappy", pageUrl: "https://nappy.co/photo/nigeria-art-market+cJL-fzDZv8UGiysGCovHb", licence: "Nappy License (free commercial use)" },
+    blurDataURL: "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAwAgCdASoQAAwAA4BaJbACdAEQPfy1FGsSgAD+eS+RuxJU5DbeBVR/furp+2TPqxkSffV2cuSnM7NKUSRoe3R4LQ2NKHe70kJ8VoRL9QWXfkI+pO02Gm5JyStMSYZuKpAAAA==",
+    credit: { name: "Ali Mkumbwa", url: "https://unsplash.com/@mkumbwajr", source: "Unsplash", pageUrl: "https://unsplash.com/photos/a-man-is-working-on-a-sewing-machine-1SAFRlUY0lk", licence: "Unsplash License (free commercial use)" },
   },
   "insurance": {
     slot: "insurance",

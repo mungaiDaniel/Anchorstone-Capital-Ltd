@@ -35,7 +35,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
       <m.div
         initial={animateIn ? { opacity: 0, y: reduce ? 0 : distance.reveal * 0.5 } : false}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: reduce ? duration.fast : duration.base, delay: animateIn && !reduce ? duration.page * 0.45 : 0, ease: ease.out }}
+        transition={{ duration: reduce ? duration.fast : duration.base, delay: animateIn && !reduce ? duration.page * 0.3 : 0, ease: ease.out }}
       >
         {children}
       </m.div>
