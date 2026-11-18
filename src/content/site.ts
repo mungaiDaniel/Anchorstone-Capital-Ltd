@@ -517,7 +517,7 @@ export const members: TeamMember[] = [
   {
     slug: "gilbert-lekilabu",
     name: "Gilbert Lekilabu",
-    role: "Relationship Banking & Business Management",
+    role: "Director",
     photo: { src: "/brand/team/gilbert-lekilabu.jpg", alt: "Portrait of Gilbert Lekilabu", position: "center 20%" },
     summary:
       "A relationship banking and business management professional with over 10 years in the financial sector. Gilbert builds lasting client relationships, structures practical financing solutions and drives business growth.",
