@@ -559,6 +559,15 @@ export const members: TeamMember[] = [
       "An experienced Liabilities Manager with over 15 years across the financial services sector. Stephen has a proven track record in custodian and investor services, pension administration, fund management, investment banking, Real Estate Investment Trusts (REITs), accounting, auditing, tax, risk and compliance.",
     tags: ["15+ years experience", "Custody & pensions", "Fund management", "REITs, risk & compliance"],
   },
+  {
+    slug: "amos-aketch",
+    name: "Amos Opudo Aketch",
+    role: "Head of Credit Appraisal and Risk",
+    photo: { src: "/brand/team/amos-aketch.jpg", alt: "Portrait of Amos Opudo Aketch, Head of Credit Appraisal and Risk", position: "center 12%" },
+    summary:
+      "A senior banking and development finance executive with over 30 years of experience across commercial banking, development finance institutions and investment advisory in East Africa. Amos has led credit administration, portfolio oversight and lending controls, and digitised credit operations to cut approval turnaround by about 40%.",
+    tags: ["30+ years experience", "Credit risk & administration", "Portfolio oversight", "Development finance"],
+  },
 ];
 
 export const team: TeamMember[] = [ceo, ...members];
