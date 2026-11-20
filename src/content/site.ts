@@ -524,6 +524,15 @@ export const members: TeamMember[] = [
     tags: ["Relationship banking", "Business management", "Client portfolio growth"],
   },
   {
+    slug: "joseph-wakaba",
+    name: "Joseph Wakaba",
+    role: "Director",
+    photo: { src: "/brand/team/joseph-wakaba.jpg", alt: "Portrait of Joseph Wakaba, Director", position: "center 22%" },
+    summary:
+      "A legal practitioner with over a decade of experience in employment and labour, commercial, corporate and criminal law. Joseph is an accomplished dispute resolution practitioner who litigates in Kenyan courts and tribunals, specialises in business and human rights and ESG, and advises boards and HR leaders on governance and compliance.",
+    tags: ["10+ years experience", "Employment & corporate law", "Dispute resolution", "Business & human rights, ESG"],
+  },
+  {
     slug: "rose-wanjiku",
     name: "Rose W. Wanjiku",
     role: "Head of Sales",
